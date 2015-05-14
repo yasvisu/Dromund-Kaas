@@ -6,21 +6,26 @@ namespace DromundKaas
     {
         static void Main(string[] args)
         {
-            for(int i=0; i<10; i++)
-            {
-                //INTRODUCTION
-            }
 
+            //1. INTRO
+            //using functions from other files (IntroOutro.cs)
+            IntroOutro.Intro();
+            IntroOutro.PrintSomething("lo6 lo6i lo6 lo6i lo6 lo6i");
+
+
+            //2. MAIN LOOP
             bool end = false;
             while(!end)
             {
-                //MAIN LOOP
+                //...
+                end = true;
             }
 
-            for(int i=0; i<10; i++)
-            {
-                //CREDITS
-            }
+
+            //3. OUTRO
+            IntroOutro.Outro();
+
+            Console.ReadKey();
         }
     }
 }

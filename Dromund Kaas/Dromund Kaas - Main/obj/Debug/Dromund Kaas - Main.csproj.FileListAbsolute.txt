@@ -1,1 +1,7 @@
 c:\users\yas\documents\visual studio 2013\Projects\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.exe.config
+C:\dromund\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.exe.config
+C:\dromund\Dromund Kaas\Dromund Kaas - Main\obj\Debug\Dromund Kaas - Main.csprojResolveAssemblyReference.cache
+C:\dromund\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.exe
+C:\dromund\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.pdb
+C:\dromund\Dromund Kaas\Dromund Kaas - Main\obj\Debug\Dromund Kaas - Main.exe
+C:\dromund\Dromund Kaas\Dromund Kaas - Main\obj\Debug\Dromund Kaas - Main.pdb
