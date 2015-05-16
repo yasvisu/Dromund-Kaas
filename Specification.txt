@@ -1,0 +1,26 @@
+Specification for the Dromund Kaas Game
+
+Global Constants:
+        public const int CONSOLE_WIDTH = 80;
+        public const int CONSOLE_HEIGHT = 30;
+
+
+Enemy Text Format:
+
+>>>>>
+name="Skalichka";
+life=5;
+ /0\
+/___\
+>>>>>
+
+(enemies.txt)
+for players: (players.txt)
+>>>>>
+name="Trombon";
+[||]
+[||]  _
+[||]_[.]  
+\______/
+  ^^^^
+>>>>>

@@ -7,10 +7,6 @@ namespace DromundKaas
 {
     public class Enemies
     {
-        public static void PrintSomething(string s)
-        {
-            Console.WriteLine(s + " baba");
-        }
 
         public static string[] GetEnemyWave(int level)
         {
