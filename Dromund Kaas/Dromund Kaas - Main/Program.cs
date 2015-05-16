@@ -28,9 +28,8 @@ namespace DromundKaas
             bool end = false;
             while (!end)
             {
-                Utility.PushDown(game.BG_MAT, Utility.GenerateStarLine(game.RAND));
                 end = true;
-                Thread.Sleep(1000);
+                // Thread.Sleep(1000);
             }
 
 

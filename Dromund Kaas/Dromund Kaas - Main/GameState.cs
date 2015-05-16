@@ -3,22 +3,24 @@ using System.Collections.Generic;
 
 namespace DromundKaas
 {
+    /// <summary>
+    /// GameState class to contain the entire game state.
+    /// </summary>
     class GameState
     {
-        //GENERATORS
+        //
         public Random RAND;
 
         //ENEMY MAP VARIABLES
-        public List<char[]> ENEMY_MAT;
         public List<char[]> ENEMY_BULLET_MAT;
 
         //PLAYER MAP VARIABLES
-        public List<char[]> PLAYER_MAT;
         public List<char[]> PLAYER_BULLET_MAT;
 
         //BACKGROUND MATRIX VARIABLE
         public List<char[]> BG_MAT;
 
+        //PAINTING MATRIX
         private List<char[]> PAINTING;
 
         //Default constructor
@@ -26,12 +28,8 @@ namespace DromundKaas
         {
             RAND = new Random();
 
-            LoadMat(ENEMY_MAT);
             LoadMat(ENEMY_BULLET_MAT);
-
-            LoadMat(PLAYER_MAT);
             LoadMat(PLAYER_BULLET_MAT);
-
             LoadMat(BG_MAT);
         }
 
@@ -56,11 +54,12 @@ namespace DromundKaas
             {
                 for (int j = 0; j < GlobalVar.CONSOLE_WIDTH; j++)
                 {
-                    if (PLAYER_MAT[i][j] != ' ')
-                        PAINTING[i][j] = PLAYER_MAT[i][j];
-                    else if (ENEMY_MAT[i][j] != ' ')
-                        PAINTING[i][j] = ENEMY_MAT[i][j];
-                    else if (PLAYER_BULLET_MAT[i][j] != ' ')
+                    //if (PLAYER_MAT[i][j] != ' ')
+                    //    PAINTING[i][j] = PLAYER_MAT[i][j];
+                    //else if (ENEMY_MAT[i][j] != ' ')
+                    //    PAINTING[i][j] = ENEMY_MAT[i][j];
+                    //else
+                    if (PLAYER_BULLET_MAT[i][j] != ' ')
                         PAINTING[i][j] = PLAYER_BULLET_MAT[i][j];
                     else if (ENEMY_BULLET_MAT[i][j] != ' ')
                         PAINTING[i][j] = ENEMY_BULLET_MAT[i][j];

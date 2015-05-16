@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dromund Kaas - Main</name>
+    </assembly>
+    <members>
+        <member name="T:DromundKaas.GameState">
+            <summary>
+            GameState class to contain the entire game state.
+            </summary>
+        </member>
+    </members>
+</doc>
