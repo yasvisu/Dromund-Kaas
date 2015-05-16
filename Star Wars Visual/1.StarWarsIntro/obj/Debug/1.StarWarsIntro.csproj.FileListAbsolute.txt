@@ -1,0 +1,6 @@
+C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\bin\Debug\1.StarWarsIntro.exe.config
+C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\bin\Debug\1.StarWarsIntro.exe
+C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\bin\Debug\1.StarWarsIntro.pdb
+C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.csprojResolveAssemblyReference.cache
+C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.exe
+C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.pdb

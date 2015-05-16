@@ -1,0 +1,5 @@
+C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\bin\Debug\MyMusic.exe.config
+C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\bin\Debug\MyMusic.exe
+C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\bin\Debug\MyMusic.pdb
+C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\obj\Debug\MyMusic.exe
+C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\obj\Debug\MyMusic.pdb

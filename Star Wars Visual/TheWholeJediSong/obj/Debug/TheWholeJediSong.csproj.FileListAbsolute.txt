@@ -1,0 +1,5 @@
+C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\bin\Debug\TheWholeJediSong.exe.config
+C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\bin\Debug\TheWholeJediSong.exe
+C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\bin\Debug\TheWholeJediSong.pdb
+C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\obj\Debug\TheWholeJediSong.exe
+C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\obj\Debug\TheWholeJediSong.pdb
