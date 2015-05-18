@@ -40,4 +40,6 @@ namespace DromundKaas
     {
 
     }
+
+    public class EntityType { }
 }

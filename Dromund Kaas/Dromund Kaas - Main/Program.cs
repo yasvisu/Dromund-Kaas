@@ -7,7 +7,7 @@ namespace DromundKaas
     class SpaceShips
     {
         //MAP STATE
-        private static GameState game;
+        private static HashSet<EntityType> EntityTypes;
 
         private static void Init()
         {
