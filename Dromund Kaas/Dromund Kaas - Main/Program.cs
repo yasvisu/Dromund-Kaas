@@ -6,18 +6,36 @@ namespace DromundKaas
 {
     class SpaceShips
     {
-        //MAP STATE
+
         private static HashSet<EntityType> EntityTypes;
+        private static List<Entity> Entities;
+        private static Queue<bool[]> EnemyBullets;
+        private static Queue<bool[]> PlayerBullets;
+        private static int CycleCounter;
 
         private static void Init()
         {
             Console.SetBufferSize(GlobalVar.CONSOLE_WIDTH, GlobalVar.CONSOLE_HEIGHT);
-            game = new GameState();
+
+            EntityTypes = new HashSet<EntityType>();
+            LoadEntityTypes(EntityTypes);
+
+            Entities = new List<Entity>();
+
+            EnemyBullets = new Queue<bool[]>(GlobalVar.CONSOLE_HEIGHT);
+            PlayerBullets = new Queue<bool[]>(GlobalVar.CONSOLE_HEIGHT);
+            for (int i = 0; i < GlobalVar.CONSOLE_HEIGHT; i++)
+            {
+                EnemyBullets.Enqueue(new bool[GlobalVar.CONSOLE_WIDTH]);
+                EnemyBullets.Enqueue(new bool[GlobalVar.CONSOLE_WIDTH]);
+            }
+
+            CycleCounter = 0;
         }
 
         static void Main(string[] args)
         {
-            Init();
+            // Init();
 
             //1. INTRO
             //using functions from other files (IntroOutro.cs)
@@ -37,6 +55,11 @@ namespace DromundKaas
             IntroOutro.Outro();
 
             Console.ReadKey();
+        }
+    
+        private static void LoadEntityTypes(HashSet<EntityType> target)
+        {
+
         }
     }
 }
