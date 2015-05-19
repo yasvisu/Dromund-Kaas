@@ -105,7 +105,7 @@ namespace DromundKaas
             string path = @"../../EntityTypes.dk";
             string text = File.ReadAllText(path);
             string[] types = text.Split(new string[] { ">>>>>" }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 1; i < types.Length - 1; i++)
+            for (int i = 0; i < types.Length; i++)
             {
                 string[] typeFeatures = types[i].Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -118,33 +118,37 @@ namespace DromundKaas
                 string pattern = @"name=""(?<name>[\w]+)""";
                 Regex regex = new Regex(pattern);
                 Match match = regex.Match(types[i]);
-                // Console.WriteLine("Name: {0}", match.Groups[1]);
                 N = match.Groups["name"].Value;
 
                 //Sprite
+                string[] shapeLines;
                 if (match.Groups[1].ToString() == "LukeSkywalker")
                 {
-                    Console.WriteLine("Shape: {0}", typeFeatures[2]);
-                    //S = ...
+                    shapeLines = typeFeatures[2].Split('\n');
                 }
                 else
                 {
-                    Console.WriteLine("Shape: {0}", typeFeatures[3]);
-                    //S = ...
+                    shapeLines = typeFeatures[3].Split('\n');
+                }
+                S = new char[shapeLines.Length - 1, shapeLines[1].Length];
+                for (int line = 0; line < shapeLines.Length - 1; line++)
+                {
+                    for (int elem = 0; elem < shapeLines[line].Length; elem++)
+                    {
+                        S[line, elem] = shapeLines[line][elem];
+                    }
                 }
 
                 //Life
                 pattern = @"life=""(?<life>[\d]+)""";
                 regex = new Regex(pattern);
                 match = regex.Match(types[i]);
-                // Console.WriteLine("Life: {0}", match.Groups[1]);
                 M = int.Parse(match.Groups["life"].Value);
 
                 //Movement
                 pattern = @"movement=""(?<movement>[\w]+)""";
                 regex = new Regex(pattern);
                 match = regex.Match(types[i]);
-                // Console.WriteLine("Move: {0}\n", match.Groups[1]);
                 Mov = match.Groups["movement"].Value;
 
                 EntityType temp = new EntityType(N, S, M, Mov);
