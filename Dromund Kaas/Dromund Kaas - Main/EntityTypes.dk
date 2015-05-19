@@ -1,0 +1,38 @@
+﻿
+>>>>>
+name="DarthVader";
+life="10";
+movement="dllrr";
+  ___
+ |@|@|
+/__A__\
+>>>>>
+name="LukeSkywalker";
+life="15";
+    A
+   | |
+|  | |  |
+|$=| |=$|
+|==|_|==| 
+>>>>>
+name="EnemySpaceship1";
+life="2";
+movement="dllrr";
+/     \
+|=(@)=|
+\     /
+>>>>>
+name="ShootingRock";
+life="5";
+movement="dllrr";
+  /\
+ /OO\
+/_@@_\
+>>>>>
+name="EnemySpaceship2";
+life="2";
+movement="dllrr";
+(-(@)-)
+>>>>>
+
+
