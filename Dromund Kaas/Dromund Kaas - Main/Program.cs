@@ -35,7 +35,6 @@ namespace DromundKaas
             //1. INTRO
             //using functions from other files (IntroOutro.cs)
             IntroOutro.Intro();
-            IntroOutro.PrintSomething("lo6 lo6i lo6 lo6i lo6 lo6i");
 
             //Load Player into Entities
 
@@ -60,9 +59,10 @@ namespace DromundKaas
                 //Progress player, based on last keypress
                 for (int i = 1; i < Enemies.Count; i++)
                 {
-                    if (Enemies[i].Step > Enemies[i].Type.Movement.Length)
+                    if (Enemies[i].Step >= Enemies[i].Type.Movement.Length)
                         Enemies[i].Step = 0;
                     MoveEntity(Enemies[i], Enemies[i].Type.Movement[Enemies[i].Step]);
+                    Enemies[i].Step++;
                 }
                 end = true;
                 // Thread.Sleep(1000);
