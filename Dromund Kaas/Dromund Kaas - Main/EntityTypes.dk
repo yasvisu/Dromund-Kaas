@@ -1,12 +1,12 @@
 ﻿>>>>>
-name="DarthVader";
+name="bossVader";
 life="10";
 movement="dllrr";
   ___  
  |@|@| 
 /__A__\
 >>>>>
-name="LukeSkywalker";
+name="playerLuke";
 life="15";
     A    
    | |   
@@ -14,21 +14,21 @@ life="15";
 |$=| |=$|
 |==|_|==|
 >>>>>
-name="EnemySpaceship1";
+name="playerSpaceship1";
 life="2";
 movement="dllrr";
 /     \
 |=(@)=|
 \     /
 >>>>>
-name="ShootingRock";
+name="playerJabba";
 life="5";
 movement="dllrr";
   /\  
  /OO\ 
 /_@@_\
 >>>>>
-name="EnemySpaceship2";
+name="playerSpaceship2";
 life="2";
 movement="dllrr";
 (-(@)-)
