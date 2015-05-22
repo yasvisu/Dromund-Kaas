@@ -121,21 +121,21 @@ namespace DromundKaas
                 N = match.Groups["name"].Value;
 
                 //Sprite
-                string[] shapeLines;
-                if (match.Groups[1].ToString() == "LukeSkywalker")
+                string[] spriteLines;
+                if (match.Groups["name"].ToString() == "playerLuke")
                 {
-                    shapeLines = typeFeatures[2].Split('\n');
+                    spriteLines = typeFeatures[2].Split('\n');
                 }
                 else
                 {
-                    shapeLines = typeFeatures[3].Split('\n');
+                    spriteLines = typeFeatures[3].Split('\n');
                 }
-                S = new char[shapeLines.Length - 1, shapeLines[1].Length];
-                for (int line = 0; line < shapeLines.Length - 1; line++)
+                S = new char[spriteLines.Length - 1, spriteLines[1].Length];
+                for (int line = 0; line < spriteLines.Length - 1; line++)
                 {
-                    for (int elem = 0; elem < shapeLines[line].Length; elem++)
+                    for (int elem = 0; elem < spriteLines[line].Length; elem++)
                     {
-                        S[line, elem] = shapeLines[line][elem];
+                        S[line, elem] = spriteLines[line][elem];
                     }
                 }
 
