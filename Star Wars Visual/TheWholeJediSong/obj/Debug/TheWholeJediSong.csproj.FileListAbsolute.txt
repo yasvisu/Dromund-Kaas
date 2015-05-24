@@ -3,3 +3,6 @@ C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\bin\Debug\TheWholeJediS
 C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\bin\Debug\TheWholeJediSong.pdb
 C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\obj\Debug\TheWholeJediSong.exe
 C:\Users\Nicks\Desktop\Star Wars Visual\TheWholeJediSong\obj\Debug\TheWholeJediSong.pdb
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\TheWholeJediSong\bin\Debug\TheWholeJediSong.exe.config
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\TheWholeJediSong\obj\Debug\TheWholeJediSong.exe
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\TheWholeJediSong\obj\Debug\TheWholeJediSong.pdb

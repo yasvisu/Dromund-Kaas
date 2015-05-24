@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.StarWarsIntro", "1.StarWarsIntro\1.StarWarsIntro.csproj", "{F24F33CB-ADD4-45D4-86CF-C0C1C855D2D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyMusic", "MyMusic\MyMusic.csproj", "{C26F55A3-11CE-497E-94BF-4B11C5D794E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheWholeJediSong", "TheWholeJediSong\TheWholeJediSong.csproj", "{003E1427-F7D8-412B-9994-C96B882BA993}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zvezdi", "Zvezdi\Zvezdi.csproj", "{D0A44EA5-10A7-4D42-80FA-D08697202537}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{003E1427-F7D8-412B-9994-C96B882BA993}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{003E1427-F7D8-412B-9994-C96B882BA993}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{003E1427-F7D8-412B-9994-C96B882BA993}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A44EA5-10A7-4D42-80FA-D08697202537}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A44EA5-10A7-4D42-80FA-D08697202537}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A44EA5-10A7-4D42-80FA-D08697202537}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A44EA5-10A7-4D42-80FA-D08697202537}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

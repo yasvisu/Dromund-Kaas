@@ -3,3 +3,6 @@ C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\bin\Debug\MyMusic.exe
 C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\bin\Debug\MyMusic.pdb
 C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\obj\Debug\MyMusic.exe
 C:\Users\Nicks\Desktop\Star Wars Visual\MyMusic\obj\Debug\MyMusic.pdb
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\MyMusic\bin\Debug\MyMusic.exe.config
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\MyMusic\obj\Debug\MyMusic.exe
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\MyMusic\obj\Debug\MyMusic.pdb

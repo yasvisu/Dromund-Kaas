@@ -4,3 +4,9 @@ C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\bin\Debug\1.StarWarsIntr
 C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.csprojResolveAssemblyReference.cache
 C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.exe
 C:\Users\Nicks\Desktop\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.pdb
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\1.StarWarsIntro\bin\Debug\1.StarWarsIntro.exe.config
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.exe
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.pdb
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\1.StarWarsIntro\bin\Debug\1.StarWarsIntro.exe
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\1.StarWarsIntro\bin\Debug\1.StarWarsIntro.pdb
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\1.StarWarsIntro\obj\Debug\1.StarWarsIntro.csprojResolveAssemblyReference.cache
