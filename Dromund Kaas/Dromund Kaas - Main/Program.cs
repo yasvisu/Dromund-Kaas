@@ -9,6 +9,7 @@ namespace DromundKaas
     class SpaceShips
     {
         //COLLECTIONS
+
         private static Dictionary<string, EntityType> EntityTypes;
         private static List<Enemy> Enemies;
         private static bool[,] EnemyBullets;
@@ -56,12 +57,13 @@ namespace DromundKaas
 
         static void Main(string[] args) //True Main
         {
+            StarWarsIntro.Intro();
             Init();
-
+            
             //1. INTRO
             //using functions from other files (IntroOutro.cs)
             //IntroOutro.Intro();
-
+            
             //Load Player into Entities
 
 

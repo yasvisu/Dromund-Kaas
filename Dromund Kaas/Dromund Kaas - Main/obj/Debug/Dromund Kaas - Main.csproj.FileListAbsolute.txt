@@ -6,3 +6,10 @@ C:\dromund\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.pdb
 C:\dromund\Dromund Kaas\Dromund Kaas - Main\obj\Debug\Dromund Kaas - Main.exe
 C:\dromund\Dromund Kaas\Dromund Kaas - Main\obj\Debug\Dromund Kaas - Main.pdb
 C:\dromund\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.XML
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.exe.config
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.XML
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Dromund Kaas\Dromund Kaas - Main\obj\Debug\Dromund Kaas - Main.csprojResolveAssemblyReference.cache
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.exe
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Dromund Kaas\Dromund Kaas - Main\bin\Debug\Dromund Kaas - Main.pdb
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Dromund Kaas\Dromund Kaas - Main\obj\Debug\Dromund Kaas - Main.exe
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Dromund Kaas\Dromund Kaas - Main\obj\Debug\Dromund Kaas - Main.pdb
