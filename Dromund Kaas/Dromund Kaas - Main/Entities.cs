@@ -5,22 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace DromundKaas
 {
-    /// <summary>
-    /// Point structure to hold 2D coordinates.
-    /// </summary>
-    public struct Point
-    {
-        public int X;
-        public int Y;
-
-        public Point(int x, int y)
-        {
-            this.X = x;
-            this.Y = y;
-        }
-    }
-
     #region Entities
+    /// <summary>
+    /// Abstract Entity class to be extended by both Players and Enemies.
+    /// </summary>
     public abstract class Entity
     {
         /// <summary>
@@ -43,28 +31,58 @@ namespace DromundKaas
         /// </summary>
         public EntityType Type;
 
-        private Entity() { }
+        /// <summary>
+        /// Default empty constructor for Entities.
+        /// </summary>
+        public Entity() { }
 
-        public Entity(int L, Point Loc, EntityType T, ConsoleColor C)
+        /// <summary>
+        /// Default Entity builder for all in-class parameters.
+        /// </summary>
+        /// <param name="Life">Current life of the Entity.</param>
+        /// <param name="Location">Current location of the Entity.</param>
+        /// <param name="Type">Type of the Entity.</param>
+        /// <param name="Color">Console color of the Entity.</param>
+        public Entity(int Life, Point Location, EntityType Type, ConsoleColor Color)
         {
-            this.Life = L;
-            this.Location = Loc;
-            this.Type = T;
-            this.Color = C;
+            this.Life = Life;
+            this.Location = Location;
+            this.Type = Type;
+            this.Color = Color;
         }
     }
 
+    /// <summary>
+    /// Enemy class to hold additional parameter of Step (int).
+    /// </summary>
     public class Enemy : Entity
     {
         /// <summary>
         /// Current step in the Enemy's movement path.
         /// </summary>
         public int Step;
+
+        private Enemy() { }
+
+        public Enemy(int Life, Point Location, EntityType Type, ConsoleColor Color)
+            : base(Life, Location, Type, Color)
+        {
+
+        }
     }
 
+    /// <summary>
+    /// Player class to extend Entity.
+    /// </summary>
     public class Player : Entity
     {
+        private Player() { }
 
+        public Player(int Life, Point Location, EntityType Type, ConsoleColor Color)
+            : base(Life, Location, Type, Color)
+        {
+
+        }
     }
 
     #endregion
@@ -74,21 +92,48 @@ namespace DromundKaas
     /// </summary>
     public class EntityType : IComparable
     {
+        /// <summary>
+        /// Default Entity name.
+        /// </summary>
         public string Name;
+
+        /// <summary>
+        /// Default Entity image, as a character matrix.
+        /// </summary>
         public char[,] Sprite;
+
+        /// <summary>
+        /// Maximum life for Entity type by default.
+        /// </summary>
         public int MaxLife;
+
+        /// <summary>
+        /// Default movement instructions of Entity type.
+        /// </summary>
         public string Movement;
 
         private EntityType() { }
 
-        public EntityType(string N, char[,] S, int M, string Mov)
+        /// <summary>
+        /// Default EntityType constructor for all in-class parameters.
+        /// </summary>
+        /// <param name="Name">The Name of the Entity Type.</param>
+        /// <param name="Sprite">The character image of the Entity Type.</param>
+        /// <param name="MaxLife">The default maximum life of the Entity Type.</param>
+        /// <param name="Movement">The default movement pattern of the Entity Type.</param>
+        public EntityType(string Name, char[,] Sprite, int MaxLife, string Movement)
         {
-            this.Name = N;
-            this.Sprite = S;
-            this.MaxLife = M;
-            this.Movement = Mov;
+            this.Name = Name;
+            this.Sprite = Sprite;
+            this.MaxLife = MaxLife;
+            this.Movement = Movement;
         }
 
+        /// <summary>
+        /// Compares two EntityTypes by name.
+        /// </summary>
+        /// <param name="obj">The other EntityType.</param>
+        /// <returns></returns>
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
@@ -100,9 +145,13 @@ namespace DromundKaas
                 throw new ArgumentException("Object is not an EntityType");
         }
 
-        static void ExtractData(HashSet<EntityType> Target)
+        /// <summary>
+        /// Extracts all data from the EntityTypes.dk file into a HashSet of EntityTypes.
+        /// </summary>
+        /// <param name="Target">The target to hold all the EntityTypes.</param>
+        public static void ExtractData(Dictionary<string, EntityType> Target)
         {
-            string path = @"../../EntityTypes.dk";
+            string path = GlobalVar.FILE_ENTITY_TYPES_DK;
             string text = File.ReadAllText(path);
             string[] types = text.Split(new string[] { ">>>>>" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < types.Length; i++)
@@ -130,12 +179,12 @@ namespace DromundKaas
                 {
                     spriteLines = typeFeatures[3].Split('\n');
                 }
-                S = new char[spriteLines.Length - 1, spriteLines[1].Length];
-                for (int line = 0; line < spriteLines.Length - 1; line++)
+                S = new char[spriteLines.Length - 2, spriteLines[1].Length];
+                for (int line = 1; line < spriteLines.Length - 1; line++)
                 {
                     for (int elem = 0; elem < spriteLines[line].Length; elem++)
                     {
-                        S[line, elem] = spriteLines[line][elem];
+                        S[line - 1, elem] = spriteLines[line][elem];
                     }
                 }
 
@@ -152,7 +201,7 @@ namespace DromundKaas
                 Mov = match.Groups["movement"].Value;
 
                 EntityType temp = new EntityType(N, S, M, Mov);
-                Target.Add(temp);
+                Target[temp.Name] = temp;
             }
         }
     }

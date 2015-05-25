@@ -6,62 +6,86 @@ namespace DromundKaas
 {
     class SpaceShips
     {
-
-        private static HashSet<EntityType> EntityTypes;
+        private static Dictionary<string, EntityType> EntityTypes;
         private static List<Enemy> Enemies;
         private static bool[,] EnemyBullets;
         private static bool[,] PlayerBullets;
         private static int CycleCounter;
 
+        private static char[,] ConsoleMap;
+
+        /// <summary>
+        /// Struct to hold a pair of console colors.
+        /// </summary>
+        private struct ConsoleColorPair
+        {
+            ConsoleColor Foreground;
+            ConsoleColor Background;
+
+            public ConsoleColorPair(ConsoleColor Foreground, ConsoleColor Background)
+            {
+                this.Foreground = Foreground;
+                this.Background = Background;
+            }
+        }
+
         private static void Init()
         {
+            Console.SetWindowSize(GlobalVar.CONSOLE_WIDTH, GlobalVar.CONSOLE_HEIGHT);
             Console.SetBufferSize(GlobalVar.CONSOLE_WIDTH, GlobalVar.CONSOLE_HEIGHT);
 
-            EntityTypes = new HashSet<EntityType>();
-            LoadEntityTypes(EntityTypes);
+            EntityTypes = new Dictionary<string, EntityType>();
+            EntityType.ExtractData(EntityTypes);
 
             Enemies = new List<Enemy>();
 
             EnemyBullets = new bool[GlobalVar.CONSOLE_HEIGHT, GlobalVar.CONSOLE_WIDTH];
             PlayerBullets = new bool[GlobalVar.CONSOLE_HEIGHT, GlobalVar.CONSOLE_WIDTH];
+            ConsoleMap = new char[GlobalVar.CONSOLE_HEIGHT, GlobalVar.CONSOLE_WIDTH];
 
             CycleCounter = 0;
         }
 
-        static void Main(string[] args)
+        static void Main(string[] args) //True Main
         {
-            // Init();
+            Init();
 
             //1. INTRO
             //using functions from other files (IntroOutro.cs)
-            IntroOutro.Intro();
+            //IntroOutro.Intro();
 
             //Load Player into Entities
 
-            var PLAYER = new Player();
+            //var PLAYER = new Player(10, new Point(0,0), )
+
+            var ENEMY = new Enemy(10, new Point(5, 5), EntityTypes["playerJabba"], ConsoleColor.Cyan);
+            LayerEntity(ENEMY);
+            var ENEMY2 = new Enemy(10, new Point(12, 12), EntityTypes["playerSpaceship1"], ConsoleColor.Red);
+            LayerEntity(ENEMY2);
+            PrintConsoleMap();
 
             //2. MAIN LOOP
             bool end = false;
             while (!end)
             {
-                //Increment CycleCounter
+                //1 - Increment CycleCounter
                 CycleCounter++;
 
-                //Progress Bullets
-                RollDown(EnemyBullets);
-                RollUp(PlayerBullets);
+                //2 - Progress Bullets
+                Utils.RollDown(EnemyBullets);
+                Utils.RollUp(PlayerBullets);
 
-                //Match Bullets
+                //3 - Match Bullets
                 //SEE IF BULLETS COLLIDE
 
 
-                //Progress Entities
+                //4 - Progress Entities
                 //Progress player, based on last keypress
                 for (int i = 1; i < Enemies.Count; i++)
                 {
                     if (Enemies[i].Step >= Enemies[i].Type.Movement.Length)
                         Enemies[i].Step = 0;
-                    MoveEntity(Enemies[i], Enemies[i].Type.Movement[Enemies[i].Step]);
+                    Utils.MoveEntity(Enemies[i], Enemies[i].Type.Movement[Enemies[i].Step]);
                     Enemies[i].Step++;
                 }
                 end = true;
@@ -72,75 +96,44 @@ namespace DromundKaas
             //3. OUTRO
             // IntroOutro.Outro();
 
+            Console.WriteLine("Successful Termination.");
             Console.ReadKey();
         }
 
-        private static void LoadEntityTypes(HashSet<EntityType> target)
-        {
 
-        }
 
-        private static void RollUp(bool[,] target)
+        private static void LayerEntity(Entity e)
         {
-            for (int j = 0; j < target.GetLength(1); j++)
+            //Set text color.
+            ConsoleColor previous = Console.ForegroundColor;
+            Console.ForegroundColor = e.Color;
+
+            Point temp = e.Location;
+            Console.SetCursorPosition(temp.X, temp.Y);
+            for (int i = 0; i < e.Type.Sprite.GetLength(0); i++)
             {
-                target[0, j] = false;
-            }
-            for (int i = 1; i < target.GetLength(0); i++)
-            {
-                for (int j = 0; j < target.GetLength(1); j++)
+                for (int j = 0; j < e.Type.Sprite.GetLength(1); j++)
                 {
-                    if (target[i, j])
-                    {
-                        target[i, j] = false;
-                        target[i - 1, j] = true;
-                    }
+                    int AbsoluteX = temp.X + j,
+                        AbsoluteY = temp.Y + i;
+                    if (AbsoluteX >= 0 && AbsoluteX < ConsoleMap.GetLength(0) && AbsoluteY >= 0 && AbsoluteY < ConsoleMap.GetLength(1))
+                        ConsoleMap[AbsoluteY, AbsoluteX] = e.Type.Sprite[i, j];
                 }
+                temp.Y++;
+                Console.SetCursorPosition(temp.X, temp.Y);
             }
+            Console.ForegroundColor = previous;
         }
 
-        private static void RollDown(bool[,] target)
+        private static void PrintConsoleMap()
         {
-            for (int j = 0; j < target.GetLength(1); j++)
+            Console.SetCursorPosition(0, 0);
+            for (int i = 0; i < ConsoleMap.GetLength(0); i++)
             {
-                int temp = target.GetLength(1) - 1;
-                target[temp, j] = false;
+                for (int j = 0; j < ConsoleMap.GetLength(1) - 1; j++)
+                    Console.Write(ConsoleMap[i, j] != '\0' ? ConsoleMap[i, j] : ' ');
+                Console.WriteLine(ConsoleMap[i, ConsoleMap.GetLength(1) - 1]);
             }
-            for (int i = 0; i < target.GetLength(0) - 1; i++)
-            {
-                for (int j = 0; j < target.GetLength(1); j++)
-                {
-                    if (target[i, j])
-                    {
-                        target[i, j] = false;
-                        target[i + 1, j] = true;
-                    }
-                }
-            }
-        }
-
-        private static void MoveEntity(Entity e, char direction)
-        {
-            int x = 0, y = 0;
-            switch (direction)
-            {
-                case 'u':
-                    y = -1;
-                    break;
-                case 'd':
-                    y = 1;
-                    break;
-                case 'l':
-                    x = -1;
-                    break;
-                case 'r':
-                    x = 1;
-                    break;
-                default:
-                    break;
-            }
-            e.Location.X += x;
-            e.Location.Y += y;
         }
     }
 }
