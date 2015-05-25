@@ -14,21 +14,21 @@ life="15";
 |$=| |=$|
 |==|_|==|
 >>>>>
-name="playerSpaceship1";
+name="enemySpaceship1";
 life="2";
-movement="dllrr";
+movement="dl@@lllrr@";
 /     \
 |=(@)=|
 \     /
 >>>>>
-name="playerJabba";
+name="enemyJabba";
 life="5";
-movement="dllrr";
+movement="dllrr@@";
   /\  
  /OO\ 
 /_@@_\
 >>>>>
-name="playerSpaceship2";
+name="enemySpaceship2";
 life="2";
 movement="dllrr";
 (-(@)-)

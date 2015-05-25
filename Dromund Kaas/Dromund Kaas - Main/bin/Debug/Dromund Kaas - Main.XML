@@ -83,7 +83,12 @@
             Default movement instructions of Entity type.
             </summary>
         </member>
-        <member name="M:DromundKaas.EntityType.#ctor(System.String,System.Char[0:,0:],System.Int32,System.String)">
+        <member name="F:DromundKaas.EntityType.Blasters">
+            <summary>
+            The locations of the blasters, relative to the main Location of the Entity.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.EntityType.#ctor(System.String,System.Char[0:,0:],System.Int32,System.String,DromundKaas.Point[])">
             <summary>
             Default EntityType constructor for all in-class parameters.
             </summary>
@@ -91,6 +96,7 @@
             <param name="Sprite">The character image of the Entity Type.</param>
             <param name="MaxLife">The default maximum life of the Entity Type.</param>
             <param name="Movement">The default movement pattern of the Entity Type.</param>
+            <param name="Blasters">Array of blasters.</param> 
         </member>
         <member name="M:DromundKaas.EntityType.CompareTo(System.Object)">
             <summary>
@@ -105,10 +111,16 @@
             </summary>
             <param name="Target">The target to hold all the EntityTypes.</param>
         </member>
-        <member name="T:DromundKaas.SpaceShips.ConsoleColorPair">
+        <member name="M:DromundKaas.SpaceShips.Finit">
             <summary>
-            Struct to hold a pair of console colors.
+            Clear all resources.
             </summary>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.ConsoleKeypressDaemon">
+            <summary>
+            Async ConsoleKey keypress listener.
+            </summary>
+            <param name="Target">Target to save the current keypress in.</param>
         </member>
         <member name="T:DromundKaas.Point">
             <summary>
@@ -155,14 +167,6 @@
             </summary>
             <param name="ToMove"> Entity to move.</param>
             <param name="Direction">Direction in which to move the entity. Accepted directions: 'u' (up), 'd' (down), 'l' (left), 'r' (right).</param>
-        </member>
-        <member name="M:DromundKaas.Utils.DrawColoredString(System.String,System.ConsoleColor,System.ConsoleColor)">
-            <summary>
-            Draw a colored string of the specified color at the current cursor position.
-            </summary>
-            <param name="Text">The string to be drawn.</param>
-            <param name="Foreground">The Foreground color to use.</param>
-            <param name="Background">The Background color to use.</param>
         </member>
     </members>
 </doc>

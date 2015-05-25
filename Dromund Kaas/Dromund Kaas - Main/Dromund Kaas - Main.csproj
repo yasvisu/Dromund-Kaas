@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Entities.cs" />
     <Compile Include="GlobalVar.cs" />
+    <Compile Include="Handlers.cs" />
     <Compile Include="IntroOutro.cs" />
     <Compile Include="Music.cs" />
     <Compile Include="Program.cs" />

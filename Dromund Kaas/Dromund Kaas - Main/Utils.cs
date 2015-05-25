@@ -67,14 +67,14 @@ namespace DromundKaas
                 int temp = Target.GetLength(0) - 1;
                 Target[temp, j] = false;
             }
-            for (int i = 0; i < Target.GetLength(0) - 1; i++)
+            for (int i = Target.GetLength(0) - 1; i > 0; i--)
             {
                 for (int j = 0; j < Target.GetLength(1); j++)
                 {
-                    if (Target[i, j])
+                    if (Target[i-1, j])
                     {
-                        Target[i, j] = false;
-                        Target[i + 1, j] = true;
+                        Target[i-1, j] = false;
+                        Target[i, j] = true;
                     }
                 }
             }
@@ -105,25 +105,30 @@ namespace DromundKaas
                 default:
                     break;
             }
-            ToMove.Location.X += x;
-            ToMove.Location.Y += y;
+            var temp = new Point(ToMove.Location.X + x, ToMove.Location.Y + y);
+            if (IsValidPoint(temp))
+                ToMove.Location = temp;
         }
 
-        /// <summary>
-        /// Draw a colored string of the specified color at the current cursor position.
-        /// </summary>
-        /// <param name="Text">The string to be drawn.</param>
-        /// <param name="Foreground">The Foreground color to use.</param>
-        /// <param name="Background">The Background color to use.</param>
-        public static void DrawColoredString(string Text, ConsoleColor Foreground, ConsoleColor Background)
+        private static bool IsValidPoint(Point P)
         {
-            ConsoleColor OriginalFore = Console.ForegroundColor;
-            ConsoleColor OriginalBack = Console.BackgroundColor;
-            Console.ForegroundColor = Foreground;
-            Console.BackgroundColor = Background;
-            Console.Write(Text);
-            Console.ForegroundColor = OriginalFore;
-            Console.BackgroundColor = OriginalBack;
+            if (P.X >= 0 && P.X < GlobalVar.CONSOLE_WIDTH && P.Y >= 0 && P.Y < GlobalVar.CONSOLE_HEIGHT)
+                return true;
+            return false;
         }
+
+        public static void DrawBullets(bool[,] Matrix)
+        {
+            for (int i = 0; i < Matrix.GetLength(0); i++)
+                for (int j = 0; j < Matrix.GetLength(1); j++)
+                    if (Matrix[i, j])
+                    {
+                        Console.SetCursorPosition(j, i);
+                        Console.Write('|');
+                    }
+        }
+
+
+
     }
 }

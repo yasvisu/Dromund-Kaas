@@ -112,6 +112,11 @@ namespace DromundKaas
         /// </summary>
         public string Movement;
 
+        /// <summary>
+        /// The locations of the blasters, relative to the main Location of the Entity.
+        /// </summary>
+        public Point[] Blasters;
+
         private EntityType() { }
 
         /// <summary>
@@ -121,12 +126,14 @@ namespace DromundKaas
         /// <param name="Sprite">The character image of the Entity Type.</param>
         /// <param name="MaxLife">The default maximum life of the Entity Type.</param>
         /// <param name="Movement">The default movement pattern of the Entity Type.</param>
-        public EntityType(string Name, char[,] Sprite, int MaxLife, string Movement)
+        /// <param name="Blasters">Array of blasters.</param> 
+        public EntityType(string Name, char[,] Sprite, int MaxLife, string Movement, Point[] Blasters)
         {
             this.Name = Name;
             this.Sprite = Sprite;
             this.MaxLife = MaxLife;
             this.Movement = Movement;
+            this.Blasters = Blasters;
         }
 
         /// <summary>
@@ -195,12 +202,26 @@ namespace DromundKaas
                 M = int.Parse(match.Groups["life"].Value);
 
                 //Movement
-                pattern = @"movement=""(?<movement>[\w]+)""";
+                pattern = @"movement=""(?<movement>[udlr@]+)""";
                 regex = new Regex(pattern);
                 match = regex.Match(types[i]);
                 Mov = match.Groups["movement"].Value;
 
-                EntityType temp = new EntityType(N, S, M, Mov);
+                List<Point> Blasters = new List<Point>();
+
+                for(int m=0; m<S.GetLength(0); m++)
+                {
+                    for(int n=0; n<S.GetLength(1); n++)
+                    {
+                        if(S[m,n]=='$' || S[m,n]=='@')
+                        {
+                            Blasters.Add(new Point(n, m));
+                        }
+                    }
+                }
+
+
+                EntityType temp = new EntityType(N, S, M, Mov, Blasters.ToArray());
                 Target[temp.Name] = temp;
             }
         }
