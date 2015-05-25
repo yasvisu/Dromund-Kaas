@@ -5,7 +5,7 @@ using System.Threading;
 namespace DromundKaas
 {
     class SpaceShips
-    {
+    {   
         private static Dictionary<string, EntityType> EntityTypes;
         private static List<Enemy> Enemies;
         private static bool[,] EnemyBullets;
@@ -48,12 +48,13 @@ namespace DromundKaas
 
         static void Main(string[] args) //True Main
         {
+            StarWarsIntro.Intro();
             Init();
-
+            
             //1. INTRO
             //using functions from other files (IntroOutro.cs)
             //IntroOutro.Intro();
-
+            
             //Load Player into Entities
 
             //var PLAYER = new Player(10, new Point(0,0), )

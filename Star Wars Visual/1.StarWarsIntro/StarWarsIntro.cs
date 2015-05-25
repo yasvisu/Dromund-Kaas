@@ -8,7 +8,7 @@ class StarWarsIntro
 {
     static void Main()
     {
-        Console.SetBufferSize(80, 80);
+        Console.SetBufferSize(80, 40);
         Console.CursorVisible = false;
         System.Threading.Thread.Sleep(500);
         WriteDromundKaas();
@@ -22,12 +22,13 @@ class StarWarsIntro
         WriteStarWars();
         for (int x = 0; x < 2; x++)
         {
-            StarBeepIntro();
+            //StarBeepIntro();
         };
         //TheImperialMarch();
+        System.Threading.Thread.Sleep(2000);
         StarwarsInroText();
         WriteTheConsoleGame();
-        Console.Write("THE CONSOLE GAME");
+        Console.Write("BEGIN  THE  GAME");
         Console.WriteLine();
     }
 
@@ -59,7 +60,7 @@ class StarWarsIntro
         for (int i = 0; i < 37; i = i + 9)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write("THE CONSOLE GAME".PadLeft(0 + i, ' '));
+            Console.Write("BEGIN  THE  GAME".PadLeft(0 + i, ' '));
             System.Threading.Thread.Sleep(380);
             for (int j = 0; j < 16; j++)
             {
@@ -92,7 +93,7 @@ class StarWarsIntro
         char[,] zvezdi = new char[30, 80];
 
         Random randomZvezdi = new Random();
-        randomZvezdi.Next(50, 100);
+        //randomZvezdi.Next(0, 80);
         char[][] allStars = new char[19][];
 
         using (var textRead = new StreamReader(@"..\..\..\1.StarWarsintro\WriteStarWars.txt"))
