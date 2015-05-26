@@ -16,6 +16,7 @@ namespace DromundKaas
         /// </summary>
         public int Y;
 
+
         /// <summary>
         /// Default Point constructor with two values.
         /// </summary>
@@ -25,6 +26,11 @@ namespace DromundKaas
         {
             this.X = x;
             this.Y = y;
+        }
+
+        public bool IsWithin(Point A, Point B)
+        {
+            return this.X >= A.X && this.X <= B.X && this.Y >= A.Y && this.Y <= B.Y;
         }
     }
 
@@ -76,5 +82,64 @@ namespace DromundKaas
             Console.ForegroundColor = previous;
         }
 
+
+        public static ConsoleColor SwitchCommanderColor(int Number)
+        {
+            switch (Number % 9)
+            {
+                case 1:
+                    return ConsoleColor.Cyan;
+                case 2:
+                    return ConsoleColor.Gray;
+                case 3:
+                    return ConsoleColor.Green;
+                case 4:
+                    return ConsoleColor.Magenta;
+                case 5:
+                    return ConsoleColor.Red;
+                case 6:
+                    return ConsoleColor.White;
+                case 7:
+                    return ConsoleColor.Yellow;
+                case 0:
+                    return ConsoleColor.Black;
+                default:
+                    return ConsoleColor.Cyan;
+            }
+        }
+
+
+        /// <summary>
+        /// Move given entity in given direction. Modifies the Entity Location parameter.
+        /// </summary>
+        /// <param name="ToMove"> Entity to move.</param>
+        /// <param name="Direction">Direction in which to move the entity. Accepted directions: 'u' (up), 'd' (down), 'l' (left), 'r' (right).</param>
+        public static void MoveEntity(Entity ToMove, char Direction)
+        {
+            int x = 0, y = 0;
+            switch (Direction)
+            {
+                case 'u':
+                    y = -1;
+                    break;
+                case 'd':
+                    y = 1;
+                    break;
+                case 'l':
+                    x = -1;
+                    break;
+                case 'r':
+                    x = 1;
+                    break;
+                default:
+                    break;
+            }
+
+            var temp = new Point(ToMove.Location.X + x, ToMove.Location.Y + y);
+            if (Utils.IsValidPoint(temp))
+            {
+                ToMove.Location = temp;
+            }
+        }
     }
 }

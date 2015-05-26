@@ -34,11 +34,6 @@
             Type of Entity.
             </summary>
         </member>
-        <member name="M:DromundKaas.Entity.#ctor">
-            <summary>
-            Default empty constructor for Entities.
-            </summary>
-        </member>
         <member name="M:DromundKaas.Entity.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
             <summary>
             Default Entity builder for all in-class parameters.
@@ -163,13 +158,6 @@
             Clear all resources.
             </summary>
         </member>
-        <member name="M:DromundKaas.SpaceShips.MoveEntity(DromundKaas.Entity,System.Char)">
-            <summary>
-            Move given entity in given direction. Modifies the Entity Location parameter.
-            </summary>
-            <param name="ToMove"> Entity to move.</param>
-            <param name="Direction">Direction in which to move the entity. Accepted directions: 'u' (up), 'd' (down), 'l' (left), 'r' (right).</param>
-        </member>
         <member name="M:DromundKaas.SpaceShips.ConsoleKeypressDaemon">
             <summary>
             Async ConsoleKey keypress listener.
@@ -214,6 +202,13 @@
             Print given entity to the console.
             </summary>
             <param name="Current">The entity to be printed.</param>
+        </member>
+        <member name="M:DromundKaas.Utils.MoveEntity(DromundKaas.Entity,System.Char)">
+            <summary>
+            Move given entity in given direction. Modifies the Entity Location parameter.
+            </summary>
+            <param name="ToMove"> Entity to move.</param>
+            <param name="Direction">Direction in which to move the entity. Accepted directions: 'u' (up), 'd' (down), 'l' (left), 'r' (right).</param>
         </member>
     </members>
 </doc>

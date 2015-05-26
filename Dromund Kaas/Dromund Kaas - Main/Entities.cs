@@ -37,11 +37,6 @@ namespace DromundKaas
         public EntityType Type;
 
         /// <summary>
-        /// Default empty constructor for Entities.
-        /// </summary>
-        public Entity() { }
-
-        /// <summary>
         /// Default Entity builder for all in-class parameters.
         /// </summary>
         /// <param name="ID">ID of the Entity.</param>
@@ -57,6 +52,16 @@ namespace DromundKaas
             this.Type = Type;
             this.Color = Color;
         }
+
+        public void ModifyLife(int Count)
+        {
+            this.Life += Count;
+        }
+
+        public Point GetBottomRightCorner()
+        {
+            return new Point(this.Location.X + this.Type.Sprite.GetLength(1) - 1, this.Location.Y + this.Type.Sprite.GetLength(0) - 1);
+        }
     }
 
     /// <summary>
@@ -69,7 +74,6 @@ namespace DromundKaas
         /// </summary>
         public int Step;
 
-        private Enemy() { }
 
         /// <summary>
         /// Default Entity builder for all in-class parameters.
@@ -91,8 +95,6 @@ namespace DromundKaas
     /// </summary>
     public class Player : Entity
     {
-        private Player() { }
-
         /// <summary>
         /// Default Entity builder for all in-class parameters.
         /// </summary>

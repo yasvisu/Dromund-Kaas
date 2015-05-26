@@ -1,46 +1,29 @@
 ﻿using System;
+using System.Speech.Synthesis;
+using System.Threading.Tasks;
 
 namespace DromundKaas
 {
-    class Music
+    class VoiceOver
     {
-        public static void PlayTune(int n)
+        public string Name;
+        private SpeechSynthesizer WalkieTalkie;
+
+        public VoiceOver(string Name)
         {
-            switch(n)
-            {
-                case 0:
-                    IntroTune();
-                    break;
-                case 1:
-                    EnemyTune();
-                    break;
-                case 2:
-                    BossTune();
-                    break;
-                    //...
-            }
+            this.Name = Name;
+            this.WalkieTalkie = new SpeechSynthesizer();
         }
 
-        private static void IntroTune()
+        public void UtterAsync(string Words)
         {
-            Console.Beep();
-            //...
+            this.WalkieTalkie.SpeakAsync(Words);
         }
 
-        private static void EnemyTune()
+        public void Utter(string Words)
         {
-            int frequency = 0;
-            int duration = 0;
-            Console.Beep(frequency, duration);
+            this.WalkieTalkie.Speak(Words);
         }
-
-        private static void BossTune()
-        {
-            Console.Beep();
-            Console.Beep();
-        }
-
-        //...
 
     }
 }

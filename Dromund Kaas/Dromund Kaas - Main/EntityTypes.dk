@@ -20,6 +20,47 @@ life="15";
   / \  
 ~/o o\~
 >>>>>
+name="playerRock";
+life="30";
+[^^^^]  
+[,o_o,]$
+[____]  
+>>>>>
+name="playerPancake";
+life="25";
+          $          
+$\_______^M^_______/$
+>>>>>
+name="playerSkullFace";
+life="28";
+   _____   
+  /     \  
+$| () () |$
+  \  ^  /  
+   |||||   
+   |||||   
+>>>>>
+name="playerChaos";
+life="10";
+  \$|$/  
+$-|-M-|-$
+  /^|^\  
+>>>>>
+name="playerChappy";
+life="15";
+$   $
+\'0'/
+ ### 
+  #  
+ / \ 
+ >>>>>
+name="playerTheThing";
+life="100";
+\  $=================$  /
+ \|     0      0      |/ 
+  |         V         |  
+  \___________________/  
+>>>>>
 name="enemySpaceship1";
 life="2";
 movement="dllrrllrr@_";
