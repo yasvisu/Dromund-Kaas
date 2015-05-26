@@ -68,7 +68,7 @@ namespace DromundKaas
         static void Main(string[] args) //True Main
         {
             //1. INTRO
-            IntroOutro.Intro();
+            //IntroOutro.Intro();
             Console.Clear();
 
             Init();
@@ -296,7 +296,7 @@ namespace DromundKaas
                 }
                 var KeyInfo = Console.ReadKey(false);
                 int choice = int.Parse(KeyInfo.KeyChar.ToString());
-                PLAYER = new Player(IDCounter++, Entities[choice - 1].MaxLife, new Point(0, 0), Entities[choice - 1], Utils.SwitchCommanderColor(choice));
+                PLAYER = new Player(IDCounter++, Entities[choice - 1].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH/2, GlobalVar.CONSOLE_HEIGHT-5), Entities[choice - 1], Utils.SwitchCommanderColor(choice));
             }
             catch (Exception e)
             {

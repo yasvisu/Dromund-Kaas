@@ -163,6 +163,11 @@
             Async ConsoleKey keypress listener.
             </summary>
         </member>
+        <member name="M:DromundKaas.SpaceShips.PrintGameState">
+            <summary>
+            Print the current game state.
+            </summary>
+        </member>
         <member name="T:DromundKaas.Point">
             <summary>
             Point structure to hold 2D coordinates.
