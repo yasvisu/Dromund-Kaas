@@ -110,8 +110,14 @@ namespace DromundKaas
 
     #endregion
 
+    /// <summary>
+    /// Bullet class to hold Bullet entity instances. Has an additional field for Friendliness.
+    /// </summary>
     public class Bullet : Enemy
     {
+        /// <summary>
+        /// True if it is a bullet friendly to the player. False if it is an enemy bullet.
+        /// </summary>
         public bool Friendly;
 
         /// <summary>
@@ -122,6 +128,7 @@ namespace DromundKaas
         /// <param name="Location">Current location of the Entity.</param>
         /// <param name="Type">Type of the Entity.</param>
         /// <param name="Color">Console color of the Entity.</param>
+        /// <param name="Friendly">Friendliness of the Bullet.</param>
         public Bullet(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color, bool Friendly)
             : base(ID, Life, Location, Type, Color)
         {

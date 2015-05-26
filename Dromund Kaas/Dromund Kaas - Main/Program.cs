@@ -55,12 +55,12 @@ namespace DromundKaas
 
         static void Main(string[] args) //True Main
         {
-            Init();
-            //StarWarsIntro.Intro();
+
 
             //1. INTRO
-            //using functions from other files (IntroOutro.cs)
-            //IntroOutro.Intro();
+            IntroOutro.Intro();
+            Console.Clear();
+            Init();
 
             var ENEMY = new Enemy(IDCounter++, 10, new Point(5, 0), EntityTypes["enemyJabba"], ConsoleColor.Yellow);
             var ENEMY2 = new Enemy(IDCounter++, 10, new Point(50, 0), EntityTypes["enemySpaceship1"], ConsoleColor.Red);
@@ -80,7 +80,10 @@ namespace DromundKaas
 
                 //3 - Match Bullets
                 //SEE IF BULLETS COLLIDE
+                for (int i = 0; i < Bullets.Count; i++)
+                {
 
+                }
 
                 //4 - Progress Entities
 
@@ -192,7 +195,6 @@ namespace DromundKaas
             }
 
         }
-
 
         /// <summary>
         /// Async ConsoleKey keypress listener.

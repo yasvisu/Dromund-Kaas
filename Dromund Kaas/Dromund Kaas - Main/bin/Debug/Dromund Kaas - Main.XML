@@ -84,6 +84,16 @@
             <param name="Type">Type of the Entity.</param>
             <param name="Color">Console color of the Entity.</param>
         </member>
+        <member name="T:DromundKaas.Bullet">
+            <summary>
+            Bullet class to hold Bullet entity instances. Has an additional field for Friendliness.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Bullet.Friendly">
+            <summary>
+            True if it is a bullet friendly to the player. False if it is an enemy bullet.
+            </summary>
+        </member>
         <member name="M:DromundKaas.Bullet.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor,System.Boolean)">
             <summary>
             Default Entity builder for all in-class parameters.
@@ -93,6 +103,7 @@
             <param name="Location">Current location of the Entity.</param>
             <param name="Type">Type of the Entity.</param>
             <param name="Color">Console color of the Entity.</param>
+            <param name="Friendly">Friendliness of the Bullet.</param>
         </member>
         <member name="T:DromundKaas.EntityType">
             <summary>
@@ -190,6 +201,19 @@
             <summary>
             Utility function class.
             </summary>
+        </member>
+        <member name="M:DromundKaas.Utils.IsValidPoint(DromundKaas.Point)">
+            <summary>
+            Checks whether given Point is within the confines of the Console screen.
+            </summary>
+            <param name="Current">The point to be checked.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DromundKaas.Utils.PrintEntity(DromundKaas.Entity)">
+            <summary>
+            Print given entity to the console.
+            </summary>
+            <param name="Current">The entity to be printed.</param>
         </member>
     </members>
 </doc>

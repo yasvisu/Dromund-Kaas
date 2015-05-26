@@ -33,33 +33,39 @@ namespace DromundKaas
     /// </summary>
     public static class Utils
     {
-
-
-        public static bool IsValidPoint(Point P)
+        /// <summary>
+        /// Checks whether given Point is within the confines of the Console screen.
+        /// </summary>
+        /// <param name="Current">The point to be checked.</param>
+        /// <returns></returns>
+        public static bool IsValidPoint(Point Current)
         {
-            if (P.X >= 0 && P.X < GlobalVar.CONSOLE_WIDTH && P.Y >= 0 && P.Y < GlobalVar.CONSOLE_HEIGHT)
+            if (Current.X >= 0 && Current.X < GlobalVar.CONSOLE_WIDTH && Current.Y >= 0 && Current.Y < GlobalVar.CONSOLE_HEIGHT)
                 return true;
             return false;
         }
 
-
-        public static void PrintEntity(Entity e)
+        /// <summary>
+        /// Print given entity to the console.
+        /// </summary>
+        /// <param name="Current">The entity to be printed.</param>
+        public static void PrintEntity(Entity Current)
         {
             //Set text color.
             ConsoleColor previous = Console.ForegroundColor;
-            Console.ForegroundColor = e.Color;
+            Console.ForegroundColor = Current.Color;
 
-            Point temp = e.Location;
+            Point temp = Current.Location;
             Console.SetCursorPosition(temp.X, temp.Y);
-            for (int i = 0; i < e.Type.Sprite.GetLength(0); i++)
+            for (int i = 0; i < Current.Type.Sprite.GetLength(0); i++)
             {
-                for (int j = 0; j < e.Type.Sprite.GetLength(1); j++)
+                for (int j = 0; j < Current.Type.Sprite.GetLength(1); j++)
                 {
                     int AbsoluteX = temp.X + j,
                         AbsoluteY = temp.Y + i;
                     if (AbsoluteX >= 0 && AbsoluteX < GlobalVar.CONSOLE_WIDTH && AbsoluteY >= 0 && AbsoluteY < GlobalVar.CONSOLE_HEIGHT)
                     {
-                        Console.Write(e.Type.Sprite[i, j]);
+                        Console.Write(Current.Type.Sprite[i, j]);
                     }
                 }
                 temp.Y++;
