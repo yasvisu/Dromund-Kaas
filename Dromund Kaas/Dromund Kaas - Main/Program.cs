@@ -11,14 +11,15 @@ namespace DromundKaas
         //COLLECTIONS
 
         private static Dictionary<string, EntityType> EntityTypes;
-        private static List<Enemy> Enemies;
-        private static bool[,] EnemyBullets;
-        private static bool[,] PlayerBullets;
-        private static int CycleCounter;
-
-        private static char[,] ConsoleMap;
 
         private static Player PLAYER;
+        private static List<Enemy> Enemies;
+        private static List<Bullet> Bullets;
+
+        private static Entity[,] EntityMap;
+
+        private static int CycleCounter;
+        private static uint IDCounter;
 
         //ASYNC
         private static HashSet<Task> HandlerSet;
@@ -34,17 +35,14 @@ namespace DromundKaas
             EntityTypes = new Dictionary<string, EntityType>();
             EntityType.ExtractData(EntityTypes);
 
+            PLAYER = new Player(IDCounter++, 10, new Point(GlobalVar.CONSOLE_WIDTH / 2, GlobalVar.CONSOLE_HEIGHT / 2), EntityTypes["playerMouse"], ConsoleColor.Green);
             Enemies = new List<Enemy>();
+            Bullets = new List<Bullet>();
 
-            EnemyBullets = new bool[GlobalVar.CONSOLE_HEIGHT, GlobalVar.CONSOLE_WIDTH];
-            PlayerBullets = new bool[GlobalVar.CONSOLE_HEIGHT, GlobalVar.CONSOLE_WIDTH];
-            ConsoleMap = new char[GlobalVar.CONSOLE_HEIGHT, GlobalVar.CONSOLE_WIDTH];
+            EntityMap = new Entity[GlobalVar.CONSOLE_HEIGHT, GlobalVar.CONSOLE_WIDTH];
 
             CycleCounter = 0;
-
-
-            PLAYER = new Player(10, new Point(5, 5), EntityTypes["playerLuke"], ConsoleColor.Cyan);
-
+            IDCounter = 0;
 
             //ASYNC
             HandlerSet = new HashSet<Task>();
@@ -57,18 +55,15 @@ namespace DromundKaas
 
         static void Main(string[] args) //True Main
         {
-            StarWarsIntro.Intro();
             Init();
-            
+            //StarWarsIntro.Intro();
+
             //1. INTRO
             //using functions from other files (IntroOutro.cs)
             //IntroOutro.Intro();
-            
-            //Load Player into Entities
 
-
-            var ENEMY = new Enemy(10, new Point(5, 5), EntityTypes["enemyJabba"], ConsoleColor.Yellow);
-            var ENEMY2 = new Enemy(10, new Point(50, 5), EntityTypes["enemySpaceship1"], ConsoleColor.Red);
+            var ENEMY = new Enemy(IDCounter++, 10, new Point(5, 0), EntityTypes["enemyJabba"], ConsoleColor.Yellow);
+            var ENEMY2 = new Enemy(IDCounter++, 10, new Point(50, 0), EntityTypes["enemySpaceship1"], ConsoleColor.Red);
             Enemies.Add(ENEMY);
             Enemies.Add(ENEMY2);
 
@@ -77,31 +72,42 @@ namespace DromundKaas
             while (!END)
             {
 
-                Console.Clear();
                 //1 - Increment CycleCounter
                 CycleCounter++;
 
                 //2 - Progress Bullets
-                Utils.RollDown(EnemyBullets);
-                Utils.RollUp(PlayerBullets);
 
-                Utils.DrawBullets(PlayerBullets);
-                Utils.DrawBullets(EnemyBullets);
 
                 //3 - Match Bullets
                 //SEE IF BULLETS COLLIDE
 
 
                 //4 - Progress Entities
-                //Progress player, based on last keypress
+
                 for (int i = 0; i < Enemies.Count; i++)
                 {
                     EnemyAction(Enemies[i]);
                 }
 
-                PrintEntity(PLAYER);
+
+                for (int i = 0; i < Bullets.Count; i++)
+                {
+                    BulletAction(Bullets[i]);
+                }
+
+                Console.Clear();
+                Utils.PrintEntity(PLAYER);
                 foreach (var E in Enemies)
-                    PrintEntity(E);
+                {
+                    Utils.PrintEntity(E);
+                }
+                lock (Bullets)
+                {
+                    foreach (var B in Bullets)
+                    {
+                        Utils.PrintEntity(B);
+                    }
+                }
                 Thread.Sleep(100);
             }
             #endregion
@@ -110,8 +116,8 @@ namespace DromundKaas
             // IntroOutro.Outro();
 
             Finit();
-            Console.WriteLine("Successful Termination.");
         }
+        #region Non-Main
 
         /// <summary>
         /// Clear all resources.
@@ -119,72 +125,78 @@ namespace DromundKaas
         private static void Finit()
         {
             // do something
+            Console.WriteLine("Successful termination.");
+            Console.ReadKey(true);
         }
 
-        private static void LayerEntity(Entity e)
-        {
-            //Set text color.
-            ConsoleColor previous = Console.ForegroundColor;
-            Console.ForegroundColor = e.Color;
 
-            Point temp = e.Location;
-            Console.SetCursorPosition(temp.X, temp.Y);
-            for (int i = 0; i < e.Type.Sprite.GetLength(0); i++)
+        /// <summary>
+        /// Move given entity in given direction. Modifies the Entity Location parameter.
+        /// </summary>
+        /// <param name="ToMove"> Entity to move.</param>
+        /// <param name="Direction">Direction in which to move the entity. Accepted directions: 'u' (up), 'd' (down), 'l' (left), 'r' (right).</param>
+        public static void MoveEntity(Entity ToMove, char Direction)
+        {
+            int x = 0, y = 0;
+            switch (Direction)
             {
-                for (int j = 0; j < e.Type.Sprite.GetLength(1); j++)
+                case 'u':
+                    y = -1;
+                    break;
+                case 'd':
+                    y = 1;
+                    break;
+                case 'l':
+                    x = -1;
+                    break;
+                case 'r':
+                    x = 1;
+                    break;
+                default:
+                    break;
+            }
+
+            var temp = new Point(ToMove.Location.X + x, ToMove.Location.Y + y);
+            if (Utils.IsValidPoint(temp) && !Collides(temp))
+            {
+                //LayerEntity(ToMove, temp);
+                ToMove.Location = temp;
+            }
+        }
+
+        private static bool Collides(Point Current)
+        {
+            return false;
+        }
+
+        private static void LayerEntity(Entity Current, Point Destination)
+        {
+            Point temp = Current.Location;
+            for (int i = temp.Y; i < temp.Y + Current.Type.Sprite.GetLength(0); i++)
+            {
+                for (int j = temp.X; j < temp.X + Current.Type.Sprite.GetLength(1); j++)
                 {
-                    int AbsoluteX = temp.X + j,
-                        AbsoluteY = temp.Y + i;
-                    if (AbsoluteX >= 0 && AbsoluteX < ConsoleMap.GetLength(0) && AbsoluteY >= 0 && AbsoluteY < ConsoleMap.GetLength(1))
-                        ConsoleMap[AbsoluteY, AbsoluteX] = e.Type.Sprite[i, j];
+                    if (Utils.IsValidPoint(new Point(i, j)))
+                        EntityMap[i, j] = null;
                 }
-                temp.Y++;
-                Console.SetCursorPosition(temp.X, temp.Y);
             }
-            Console.ForegroundColor = previous;
-        }
+            temp = Destination;
 
-        private static void PrintEntity(Entity e)
-        {
-            //Set text color.
-            ConsoleColor previous = Console.ForegroundColor;
-            Console.ForegroundColor = e.Color;
-
-            Point temp = e.Location;
-            Console.SetCursorPosition(temp.X, temp.Y);
-            for (int i = 0; i < e.Type.Sprite.GetLength(0); i++)
+            for (int i = temp.Y; i < temp.Y + Current.Type.Sprite.GetLength(0); i++)
             {
-                for (int j = 0; j < e.Type.Sprite.GetLength(1); j++)
+                for (int j = temp.X; j < temp.X + Current.Type.Sprite.GetLength(1); j++)
                 {
-                    int AbsoluteX = temp.X + j,
-                        AbsoluteY = temp.Y + i;
-                    if (AbsoluteX >= 0 && AbsoluteX < ConsoleMap.GetLength(1) && AbsoluteY >= 0 && AbsoluteY < ConsoleMap.GetLength(0))
-                        Console.Write(e.Type.Sprite[i, j]);
+                    if (Utils.IsValidPoint(new Point(i, j)))
+                        EntityMap[i, j] = Current;
                 }
-                temp.Y++;
-                if (temp.X > 0 && temp.X < GlobalVar.CONSOLE_WIDTH && temp.Y > 0 && temp.Y < GlobalVar.CONSOLE_HEIGHT)
-                    Console.SetCursorPosition(temp.X, temp.Y);
             }
-            Console.SetCursorPosition(0, 0);
-            Console.ForegroundColor = previous;
-        }
 
-        private static void PrintConsoleMap()
-        {
-            Console.SetCursorPosition(0, 0);
-            for (int i = 0; i < ConsoleMap.GetLength(0); i++)
-            {
-                for (int j = 0; j < ConsoleMap.GetLength(1) - 1; j++)
-                    Console.Write(ConsoleMap[i, j] != '\0' ? ConsoleMap[i, j] : ' ');
-                Console.WriteLine(ConsoleMap[i, ConsoleMap.GetLength(1) - 1]);
-            }
         }
 
 
         /// <summary>
         /// Async ConsoleKey keypress listener.
         /// </summary>
-        /// <param name="Target">Target to save the current keypress in.</param>
         public static void ConsoleKeypressDaemon()
         {
             ConsoleKeyInfo keyInfo;
@@ -199,19 +211,22 @@ namespace DromundKaas
                         END = true;
                         break;
                     case ConsoleKey.W:
-                        Utils.MoveEntity(PLAYER, 'u');
+                        MoveEntity(PLAYER, 'u');
                         break;
                     case ConsoleKey.A:
-                        Utils.MoveEntity(PLAYER, 'l');
+                        MoveEntity(PLAYER, 'l');
                         break;
                     case ConsoleKey.S:
-                        Utils.MoveEntity(PLAYER, 'd');
+                        MoveEntity(PLAYER, 'd');
                         break;
                     case ConsoleKey.D:
-                        Utils.MoveEntity(PLAYER, 'r');
+                        MoveEntity(PLAYER, 'r');
                         break;
                     case ConsoleKey.Spacebar:
-                        Task.Run(() => PlayerShoot());
+                        lock (Bullets)
+                        {
+                            Task.Run(() => PlayerShoot());
+                        }
                         break;
                     default:
                         break;
@@ -221,21 +236,29 @@ namespace DromundKaas
 
         public static void PlayerShoot()
         {
-            Shoot(PLAYER, PlayerBullets);
+            Shoot(PLAYER, true);
         }
 
         public static void EnemyShoot(Enemy Shooter)
         {
-            Shoot(Shooter, EnemyBullets);
+            Shoot(Shooter, false);
         }
 
-        private static void Shoot(Entity Shooter, bool[,] BulletMap)
+        private static void Shoot(Entity Shooter, bool Friendly)
         {
             foreach (var P in Shooter.Type.Blasters)
             {
                 Point temp = new Point(P.X + Shooter.Location.X, P.Y + Shooter.Location.Y);
                 if (temp.X > 0 && temp.X < GlobalVar.CONSOLE_WIDTH && temp.Y > 0 && temp.Y < GlobalVar.CONSOLE_HEIGHT)
-                    BulletMap[temp.Y, temp.X] = true;
+                {
+                    EntityType bulletTemp = EntityTypes["bulletRegular"];
+                    Bullets.Add(new Bullet(IDCounter++,
+                        bulletTemp.MaxLife,
+                        temp,
+                        bulletTemp,
+                        (Friendly ? GlobalVar.PLAYER_BULLET_COLOR : GlobalVar.ENEMY_BULLET_COLOR),
+                        Friendly));
+                }
             }
         }
 
@@ -249,7 +272,7 @@ namespace DromundKaas
                     EnemyShoot(Current);
                     break;
                 default:
-                    Utils.MoveEntity(Current, Current.Type.Movement[Current.Step]);
+                    MoveEntity(Current, Current.Type.Movement[Current.Step]);
                     if (Current.Location.Y == GlobalVar.CONSOLE_HEIGHT - 1)
                         Enemies.Remove(Current);
                     break;
@@ -257,5 +280,36 @@ namespace DromundKaas
             Current.Step++;
         }
 
+        public static void BulletAction(Bullet Current)
+        {
+            if (Current.Step >= Current.Type.Movement.Length)
+                Current.Step = 0;
+            switch (Current.Type.Movement[Current.Step])
+            {
+                case '@':
+                    EnemyShoot(Current);
+                    break;
+                default:
+                    char temp = Current.Type.Movement[Current.Step];
+                    if (Current.Friendly)
+                    {
+                        if (temp == 'd')
+                        {
+                            temp = 'u';
+                        }
+                        else if (temp == 'u')
+                        {
+                            temp = 'd';
+                        }
+                    }
+                    MoveEntity(Current, temp);
+                    if (Current.Location.Y == 0 || Current.Location.Y == GlobalVar.CONSOLE_HEIGHT - 1)
+                        Bullets.Remove(Current);
+                    break;
+            }
+            Current.Step++;
+        }
+
+        #endregion
     }
 }

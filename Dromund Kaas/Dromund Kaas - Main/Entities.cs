@@ -12,6 +12,11 @@ namespace DromundKaas
     public abstract class Entity
     {
         /// <summary>
+        /// Current Entity ID.
+        /// </summary>
+        public uint ID;
+
+        /// <summary>
         /// Remaining life to the entity.
         /// </summary>
         public int Life;
@@ -39,12 +44,14 @@ namespace DromundKaas
         /// <summary>
         /// Default Entity builder for all in-class parameters.
         /// </summary>
+        /// <param name="ID">ID of the Entity.</param>
         /// <param name="Life">Current life of the Entity.</param>
         /// <param name="Location">Current location of the Entity.</param>
         /// <param name="Type">Type of the Entity.</param>
         /// <param name="Color">Console color of the Entity.</param>
-        public Entity(int Life, Point Location, EntityType Type, ConsoleColor Color)
+        public Entity(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color)
         {
+            this.ID = ID;
             this.Life = Life;
             this.Location = Location;
             this.Type = Type;
@@ -64,8 +71,16 @@ namespace DromundKaas
 
         private Enemy() { }
 
-        public Enemy(int Life, Point Location, EntityType Type, ConsoleColor Color)
-            : base(Life, Location, Type, Color)
+        /// <summary>
+        /// Default Entity builder for all in-class parameters.
+        /// </summary>
+        /// <param name="ID">ID of the Entity.</param>
+        /// <param name="Life">Current life of the Entity.</param>
+        /// <param name="Location">Current location of the Entity.</param>
+        /// <param name="Type">Type of the Entity.</param>
+        /// <param name="Color">Console color of the Entity.</param>
+        public Enemy(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color)
+            : base(ID, Life, Location, Type, Color)
         {
 
         }
@@ -78,14 +93,41 @@ namespace DromundKaas
     {
         private Player() { }
 
-        public Player(int Life, Point Location, EntityType Type, ConsoleColor Color)
-            : base(Life, Location, Type, Color)
+        /// <summary>
+        /// Default Entity builder for all in-class parameters.
+        /// </summary>
+        /// <param name="ID">ID of the Entity.</param>
+        /// <param name="Life">Current life of the Entity.</param>
+        /// <param name="Location">Current location of the Entity.</param>
+        /// <param name="Type">Type of the Entity.</param>
+        /// <param name="Color">Console color of the Entity.</param>
+        public Player(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color)
+            : base(ID, Life, Location, Type, Color)
         {
 
         }
     }
 
     #endregion
+
+    public class Bullet : Enemy
+    {
+        public bool Friendly;
+
+        /// <summary>
+        /// Default Entity builder for all in-class parameters.
+        /// </summary>
+        /// <param name="ID">ID of the Entity.</param>
+        /// <param name="Life">Current life of the Entity.</param>
+        /// <param name="Location">Current location of the Entity.</param>
+        /// <param name="Type">Type of the Entity.</param>
+        /// <param name="Color">Console color of the Entity.</param>
+        public Bullet(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color, bool Friendly)
+            : base(ID, Life, Location, Type, Color)
+        {
+            this.Friendly = Friendly;
+        }
+    }
 
     /// <summary>
     /// Type of Entity. To be stored as unique values in the Main module.
@@ -108,7 +150,7 @@ namespace DromundKaas
         public int MaxLife;
 
         /// <summary>
-        /// Default movement instructions of Entity type.
+        /// Default movement instructions of Entity type - udlr_@
         /// </summary>
         public string Movement;
 
@@ -178,7 +220,7 @@ namespace DromundKaas
 
                 //Sprite
                 string[] spriteLines;
-                if (match.Groups["name"].ToString() == "playerLuke")
+                if (match.Groups["name"].ToString().Contains("player"))
                 {
                     spriteLines = typeFeatures[2].Split('\n');
                 }
@@ -202,18 +244,18 @@ namespace DromundKaas
                 M = int.Parse(match.Groups["life"].Value);
 
                 //Movement
-                pattern = @"movement=""(?<movement>[udlr@]+)""";
+                pattern = @"movement=""(?<movement>[udlr@_]*)""";
                 regex = new Regex(pattern);
                 match = regex.Match(types[i]);
                 Mov = match.Groups["movement"].Value;
 
                 List<Point> Blasters = new List<Point>();
 
-                for(int m=0; m<S.GetLength(0); m++)
+                for (int m = 0; m < S.GetLength(0); m++)
                 {
-                    for(int n=0; n<S.GetLength(1); n++)
+                    for (int n = 0; n < S.GetLength(1); n++)
                     {
-                        if(S[m,n]=='$' || S[m,n]=='@')
+                        if (S[m, n] == '$' || S[m, n] == '@')
                         {
                             Blasters.Add(new Point(n, m));
                         }

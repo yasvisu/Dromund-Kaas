@@ -9,7 +9,7 @@ class StarWarsIntro
 {
     public static void Intro()
     {
-        Console.SetBufferSize(80, 80);
+        //Console.SetBufferSize(80, 80);
         Console.CursorVisible = false;
         System.Threading.Thread.Sleep(500);
         WriteDromundKaas();

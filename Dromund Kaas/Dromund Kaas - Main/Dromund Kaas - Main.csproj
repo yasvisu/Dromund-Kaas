@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="Entities.cs" />
     <Compile Include="GlobalVar.cs" />
-    <Compile Include="Handlers.cs" />
     <Compile Include="IntroOutro.cs" />
     <Compile Include="Music.cs" />
     <Compile Include="Program.cs" />
@@ -54,6 +53,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="EntityTypes.dk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ToDo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

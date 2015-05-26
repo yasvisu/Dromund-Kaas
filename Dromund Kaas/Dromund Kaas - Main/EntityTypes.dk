@@ -14,16 +14,22 @@ life="15";
 |$=| |=$|
 |==|_|==|
 >>>>>
+name="playerMouse";
+life="15";
+   $   
+  / \  
+~/o o\~
+>>>>>
 name="enemySpaceship1";
 life="2";
-movement="dl@@lllrr@";
+movement="dllrrllrr@_";
 /     \
 |=(@)=|
 \     /
 >>>>>
 name="enemyJabba";
 life="5";
-movement="dllrr@@";
+movement="dllrrduud@@_";
   /\  
  /OO\ 
 /_@@_\
@@ -32,4 +38,16 @@ name="enemySpaceship2";
 life="2";
 movement="dllrr";
 (-(@)-)
+>>>>>
+name="bulletRegular";
+life="2";
+movement="d";
+|
+>>>>>
+name="bulletBomb";
+life="2";
+movement="ddu";
+ * 
+***
+ * 
 >>>>>

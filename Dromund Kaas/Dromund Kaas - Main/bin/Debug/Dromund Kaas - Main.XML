@@ -1,0 +1,195 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dromund Kaas - Main</name>
+    </assembly>
+    <members>
+        <member name="T:DromundKaas.Entity">
+            <summary>
+            Abstract Entity class to be extended by both Players and Enemies.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Entity.ID">
+            <summary>
+            Current Entity ID.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Entity.Life">
+            <summary>
+            Remaining life to the entity.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Entity.Location">
+            <summary>
+            Location of the entity (top left corner of the sprite).
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Entity.Color">
+            <summary>
+            Color of the entity.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Entity.Type">
+            <summary>
+            Type of Entity.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.Entity.#ctor">
+            <summary>
+            Default empty constructor for Entities.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.Entity.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
+            <summary>
+            Default Entity builder for all in-class parameters.
+            </summary>
+            <param name="ID">ID of the Entity.</param>
+            <param name="Life">Current life of the Entity.</param>
+            <param name="Location">Current location of the Entity.</param>
+            <param name="Type">Type of the Entity.</param>
+            <param name="Color">Console color of the Entity.</param>
+        </member>
+        <member name="T:DromundKaas.Enemy">
+            <summary>
+            Enemy class to hold additional parameter of Step (int).
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Enemy.Step">
+            <summary>
+            Current step in the Enemy's movement path.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.Enemy.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
+            <summary>
+            Default Entity builder for all in-class parameters.
+            </summary>
+            <param name="ID">ID of the Entity.</param>
+            <param name="Life">Current life of the Entity.</param>
+            <param name="Location">Current location of the Entity.</param>
+            <param name="Type">Type of the Entity.</param>
+            <param name="Color">Console color of the Entity.</param>
+        </member>
+        <member name="T:DromundKaas.Player">
+            <summary>
+            Player class to extend Entity.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.Player.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
+            <summary>
+            Default Entity builder for all in-class parameters.
+            </summary>
+            <param name="ID">ID of the Entity.</param>
+            <param name="Life">Current life of the Entity.</param>
+            <param name="Location">Current location of the Entity.</param>
+            <param name="Type">Type of the Entity.</param>
+            <param name="Color">Console color of the Entity.</param>
+        </member>
+        <member name="M:DromundKaas.Bullet.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor,System.Boolean)">
+            <summary>
+            Default Entity builder for all in-class parameters.
+            </summary>
+            <param name="ID">ID of the Entity.</param>
+            <param name="Life">Current life of the Entity.</param>
+            <param name="Location">Current location of the Entity.</param>
+            <param name="Type">Type of the Entity.</param>
+            <param name="Color">Console color of the Entity.</param>
+        </member>
+        <member name="T:DromundKaas.EntityType">
+            <summary>
+            Type of Entity. To be stored as unique values in the Main module.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.EntityType.Name">
+            <summary>
+            Default Entity name.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.EntityType.Sprite">
+            <summary>
+            Default Entity image, as a character matrix.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.EntityType.MaxLife">
+            <summary>
+            Maximum life for Entity type by default.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.EntityType.Movement">
+            <summary>
+            Default movement instructions of Entity type - udlr_@
+            </summary>
+        </member>
+        <member name="F:DromundKaas.EntityType.Blasters">
+            <summary>
+            The locations of the blasters, relative to the main Location of the Entity.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.EntityType.#ctor(System.String,System.Char[0:,0:],System.Int32,System.String,DromundKaas.Point[])">
+            <summary>
+            Default EntityType constructor for all in-class parameters.
+            </summary>
+            <param name="Name">The Name of the Entity Type.</param>
+            <param name="Sprite">The character image of the Entity Type.</param>
+            <param name="MaxLife">The default maximum life of the Entity Type.</param>
+            <param name="Movement">The default movement pattern of the Entity Type.</param>
+            <param name="Blasters">Array of blasters.</param> 
+        </member>
+        <member name="M:DromundKaas.EntityType.CompareTo(System.Object)">
+            <summary>
+            Compares two EntityTypes by name.
+            </summary>
+            <param name="obj">The other EntityType.</param>
+            <returns></returns>
+        </member>
+        <member name="M:DromundKaas.EntityType.ExtractData(System.Collections.Generic.Dictionary{System.String,DromundKaas.EntityType})">
+            <summary>
+            Extracts all data from the EntityTypes.dk file into a HashSet of EntityTypes.
+            </summary>
+            <param name="Target">The target to hold all the EntityTypes.</param>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.Finit">
+            <summary>
+            Clear all resources.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.MoveEntity(DromundKaas.Entity,System.Char)">
+            <summary>
+            Move given entity in given direction. Modifies the Entity Location parameter.
+            </summary>
+            <param name="ToMove"> Entity to move.</param>
+            <param name="Direction">Direction in which to move the entity. Accepted directions: 'u' (up), 'd' (down), 'l' (left), 'r' (right).</param>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.ConsoleKeypressDaemon">
+            <summary>
+            Async ConsoleKey keypress listener.
+            </summary>
+        </member>
+        <member name="T:DromundKaas.Point">
+            <summary>
+            Point structure to hold 2D coordinates.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Point.X">
+            <summary>
+            X coordinate.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Point.Y">
+            <summary>
+            Y coordinate.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.Point.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Default Point constructor with two values.
+            </summary>
+            <param name="x">X coordinate.</param>
+            <param name="y">Y coordinate.</param>
+        </member>
+        <member name="T:DromundKaas.Utils">
+            <summary>
+            Utility function class.
+            </summary>
+        </member>
+    </members>
+</doc>
