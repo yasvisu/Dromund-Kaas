@@ -11,11 +11,11 @@ namespace DromundKaas
         /// X coordinate.
         /// </summary>
         public int X;
+
         /// <summary>
         /// Y coordinate.
         /// </summary>
         public int Y;
-
 
         /// <summary>
         /// Default Point constructor with two values.
@@ -28,6 +28,12 @@ namespace DromundKaas
             this.Y = y;
         }
 
+        /// <summary>
+        /// Checks whether the point is within two points A and B. The two need to be opposite corners of a rectangle.
+        /// </summary>
+        /// <param name="A">The first corner point.</param>
+        /// <param name="B">The opposing corner point.</param>
+        /// <returns>True if the point is between A and B.</returns>
         public bool IsWithin(Point A, Point B)
         {
             return this.X >= A.X && this.X <= B.X && this.Y >= A.Y && this.Y <= B.Y;
@@ -43,7 +49,7 @@ namespace DromundKaas
         /// Checks whether given Point is within the confines of the Console screen.
         /// </summary>
         /// <param name="Current">The point to be checked.</param>
-        /// <returns></returns>
+        /// <returns>True if the point is within the boundaries of the Console.</returns>
         public static bool IsValidPoint(Point Current)
         {
             if (Current.X >= 0 && Current.X < GlobalVar.CONSOLE_WIDTH && Current.Y >= 0 && Current.Y < GlobalVar.CONSOLE_HEIGHT)
@@ -86,7 +92,7 @@ namespace DromundKaas
         /// Select a friendly display color based on a number.
         /// </summary>
         /// <param name="Number">The number to switch.</param>
-        /// <returns></returns>
+        /// <returns>The resulting ConsoleColor.</returns>
         public static ConsoleColor SwitchColor(int Number)
         {
             switch (Number % 9)
@@ -106,7 +112,7 @@ namespace DromundKaas
                 case 7:
                     return ConsoleColor.Yellow;
                 case 0:
-                    return ConsoleColor.Black;
+                    return ConsoleColor.DarkGreen;
                 default:
                     return ConsoleColor.Cyan;
             }

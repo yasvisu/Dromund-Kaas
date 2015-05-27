@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 namespace DromundKaas
 {
     #region Entities
+
     /// <summary>
     /// Abstract Entity class to be extended by both Players and Enemies.
     /// </summary>
@@ -47,11 +48,19 @@ namespace DromundKaas
             this.Color = Color;
         }
 
+        /// <summary>
+        /// Modify life of current Entity.
+        /// </summary>
+        /// <param name="Count">Amount by which to modify the life.</param>
         public void ModifyLife(int Count)
         {
             this.Life += Count;
         }
 
+        /// <summary>
+        /// Get the bottom right corner of the Entity's Type Sprite.
+        /// </summary>
+        /// <returns>The Bottom Right Corner of the Entity's Type Sprite.</returns>
         public Point GetBottomRightCorner()
         {
             return new Point(this.Location.X + this.Type.Sprite.GetLength(1) - 1, this.Location.Y + this.Type.Sprite.GetLength(0) - 1);
@@ -162,8 +171,6 @@ namespace DromundKaas
         /// The locations of the blasters, relative to the main Location of the Entity.
         /// </summary>
         public Point[] Blasters;
-
-        private EntityType() { }
 
         /// <summary>
         /// Default EntityType constructor for all in-class parameters.

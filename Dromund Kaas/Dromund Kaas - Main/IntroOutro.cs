@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DromundKaas
 {
+    /// <summary>
+    /// Class for Introduction / Outroduction printing and music.
+    /// </summary>
     static class IntroOutro
     {
         public static void Intro()
@@ -36,6 +37,26 @@ namespace DromundKaas
             Console.WriteLine();
             Console.ReadKey(true);
             IntroMusicTask.Wait();
+        }
+
+        public static void Outro()
+        {
+            Console.Clear();
+            Console.SetCursorPosition(5, 5);
+            Console.Write("DROMUND KAAS TEAM");
+            Console.SetCursorPosition(10, 7);
+            Console.Write("CREDITS");
+            int pen = 9;
+            Console.SetCursorPosition(11, pen++);
+            Console.Write("@github:");
+            Console.SetCursorPosition(12, pen++);
+            Console.Write("IvayloKHristov - coding, encoding, Entities");
+            Console.SetCursorPosition(12, pen++);
+            Console.Write("npaunov - coding, music, Introduction");
+            Console.SetCursorPosition(12, pen++);
+            Console.Write("yasvisu - coding, engine, Architecture");
+            Console.SetCursorPosition(10, 20);
+            Console.Write("Fin!");
         }
 
         #region Resources

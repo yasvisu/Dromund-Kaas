@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DromundKaas
 {
-    class SpaceShips
+    static class SpaceShips
     {
         #region STATIC VARIABLES
         //COLLECTIONS
@@ -29,7 +28,6 @@ namespace DromundKaas
         //COUNTERS
         private static ulong CycleCounter;
         private static long SCORE;
-        private static uint EnemySpawnCount;
         private static uint EnemyKillCount;
 
         //ASYNC
@@ -43,6 +41,8 @@ namespace DromundKaas
         //VOICEOVER
         private static VoiceOver R2DTA;
         #endregion
+
+        #region Inits
 
         private static void Init()
         {
@@ -100,7 +100,10 @@ namespace DromundKaas
                 ));
         }
 
-        private static void ConsoleInit()
+        /// <summary>
+        /// Initialize Console parameters for main game loops.
+        /// </summary>
+        private static void FinishInit()
         {
             Console.Clear();
             Console.CursorVisible = false;
@@ -108,18 +111,21 @@ namespace DromundKaas
             Console.SetBufferSize(GlobalVar.CONSOLE_WIDTH, GlobalVar.CONSOLE_HEIGHT);
         }
 
+        #endregion
+
         static void Main() //True Main
         {
             //1. INTRO
+            IntroOutro.Intro();
             Task Initask = Task.Run(() => Init());
-            //IntroOutro.Intro();
-            ConsoleInit();
+
             PrintSystemStatus("Loading assets...");
             Initask.Wait();
+            FinishInit();
+            string hail = string.Format("\n\tGreetings, Commander. I am your adjutant. \n\tWelcome to the SS {0} {1}. \n\tRescue the Galaxy!", PLAYER.Color.ToString(), PLAYER.Type.Name.Substring(6));
+            PrintSystemStatus(hail);
+            R2DTA.Utter(hail);
             Console.Clear();
-
-
-            R2DTA.UtterAsync(string.Format("Greetings, Commander. I am your adjutant. Welcome to the SS {0} {1}. Rescue the Galaxy!", PLAYER.Color.ToString(), PLAYER.Type.Name.Substring(6)));
 
             #region LEVEL LOOP
             for (int l = 0; l < Levels.Length && !END; l++)
@@ -138,15 +144,18 @@ namespace DromundKaas
                 #region WAVE LOOP
                 while (temp != null)
                 {
+                    // Set up variables for centering.
                     int length = temp.Sum((x) => x.Type.Sprite.GetLength(1)) + temp.Count;
                     int XCounter = (GlobalVar.CONSOLE_WIDTH - length) / 2;
 
+                    // Add new wave enemies.
                     foreach (var E in temp)
                     {
                         E.Location = new Point(XCounter, 1);
                         XCounter += E.Type.Sprite.GetLength(1) + 1;
                         Enemies.Add(E);
                     }
+
                     #region 2. MAIN LOOP
                     while (!(END || LEVEL_END))
                     {
@@ -167,11 +176,10 @@ namespace DromundKaas
                             break;
                     }
                     #endregion
+
                     temp = Levels[l].GetNextWave();
                 }
                 #endregion
-
-
             }
             #endregion
 
@@ -186,10 +194,11 @@ namespace DromundKaas
             {
                 GameOver();
             }
+            Console.ReadKey();
             #endregion
 
             //4. OUTRO
-            // IntroOutro.Outro();
+            IntroOutro.Outro();
 
             Finit();
         }
@@ -247,6 +256,7 @@ namespace DromundKaas
             }
         }
 
+        // Main Loop functions.
         #region 2. MAIN LOOP FUNC
 
         /// <summary>
@@ -396,6 +406,9 @@ namespace DromundKaas
 
         // Functions called at the Game end.
         #region 3. GAME FINISH FUNC
+        /// <summary>
+        /// Initiate GameOver mechanics.
+        /// </summary>
         private static void GameOver()
         {
             Console.Clear();
@@ -409,6 +422,9 @@ namespace DromundKaas
 
         }
 
+        /// <summary>
+        /// Initiate GameWin mechanics.
+        /// </summary>
         private static void GameWin()
         {
             Console.Clear();
@@ -436,7 +452,6 @@ namespace DromundKaas
             Console.BackgroundColor = previousB;
         }
         #endregion
-
 
         // Various functions called throughout the engine.
         #region MISC
@@ -585,10 +600,14 @@ namespace DromundKaas
             }
         }
 
-        private static void PrintSystemStatus(string Status)
+        /// <summary>
+        /// Print system status in the top left corner of the program.
+        /// </summary>
+        /// <param name="Status">The text to print.</param>
+        private static void PrintSystemStatus(string Text)
         {
             Console.SetCursorPosition(0, 0);
-            Console.Write(Status);
+            Console.Write(Text);
         }
 
         #endregion

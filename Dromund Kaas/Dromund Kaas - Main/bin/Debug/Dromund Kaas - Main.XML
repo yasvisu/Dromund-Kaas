@@ -39,6 +39,18 @@
             <param name="Type">Type of the Entity.</param>
             <param name="Color">Console color of the Entity.</param>
         </member>
+        <member name="M:DromundKaas.Entity.ModifyLife(System.Int32)">
+            <summary>
+            Modify life of current Entity.
+            </summary>
+            <param name="Count">Amount by which to modify the life.</param>
+        </member>
+        <member name="M:DromundKaas.Entity.GetBottomRightCorner">
+            <summary>
+            Get the bottom right corner of the Entity's Type Sprite.
+            </summary>
+            <returns>The Bottom Right Corner of the Entity's Type Sprite.</returns>
+        </member>
         <member name="T:DromundKaas.Enemy">
             <summary>
             Enemy class to hold additional parameter of Step (int).
@@ -148,6 +160,49 @@
             </summary>
             <param name="Target">The target to hold all the EntityTypes.</param>
         </member>
+        <member name="T:DromundKaas.GlobalVar">
+            <summary>
+            Global Variables class.
+            </summary>
+        </member>
+        <member name="T:DromundKaas.IntroOutro">
+            <summary>
+            Class for Introduction / Outroduction printing and music.
+            </summary>
+        </member>
+        <member name="T:DromundKaas.VoiceOver">
+            <summary>
+            A SpeechSynthesizer wrapper.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.VoiceOver.Name">
+            <summary>
+            The Name of this VoiceOver.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.VoiceOver.#ctor(System.String)">
+            <summary>
+            Default constructor for VoiceOvers.
+            </summary>
+            <param name="Name">The Name of the VoiceOver.</param>
+        </member>
+        <member name="M:DromundKaas.VoiceOver.UtterAsync(System.String)">
+            <summary>
+            Let the VoiceOver say something asynchronously.
+            </summary>
+            <param name="Words">The words to utter.</param>
+        </member>
+        <member name="M:DromundKaas.VoiceOver.Utter(System.String)">
+            <summary>
+            Let the VoiceOver say something synchronously.
+            </summary>
+            <param name="Words">The words to utter.</param>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.FinishInit">
+            <summary>
+            Initialize Console parameters for main game loops.
+            </summary>
+        </member>
         <member name="M:DromundKaas.SpaceShips.Finit">
             <summary>
             Clear all resources.
@@ -182,6 +237,16 @@
         <member name="M:DromundKaas.SpaceShips.ProgressEntities">
             <summary>
             Progress entities according to their current step and movement pattern.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.GameOver">
+            <summary>
+            Initiate GameOver mechanics.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.GameWin">
+            <summary>
+            Initiate GameWin mechanics.
             </summary>
         </member>
         <member name="M:DromundKaas.SpaceShips.PlayerShoot">
@@ -219,6 +284,12 @@
             Draw option menu and let player pick ship.
             </summary>
         </member>
+        <member name="M:DromundKaas.SpaceShips.PrintSystemStatus(System.String)">
+            <summary>
+            Print system status in the top left corner of the program.
+            </summary>
+            <param name="Status">The text to print.</param>
+        </member>
         <member name="T:DromundKaas.Point">
             <summary>
             Point structure to hold 2D coordinates.
@@ -241,6 +312,14 @@
             <param name="x">X coordinate.</param>
             <param name="y">Y coordinate.</param>
         </member>
+        <member name="M:DromundKaas.Point.IsWithin(DromundKaas.Point,DromundKaas.Point)">
+            <summary>
+            Checks whether the point is within two points A and B. The two need to be opposite corners of a rectangle.
+            </summary>
+            <param name="A">The first corner point.</param>
+            <param name="B">The opposing corner point.</param>
+            <returns>True if the point is between A and B.</returns>
+        </member>
         <member name="T:DromundKaas.Utils">
             <summary>
             Utility function class.
@@ -251,7 +330,7 @@
             Checks whether given Point is within the confines of the Console screen.
             </summary>
             <param name="Current">The point to be checked.</param>
-            <returns></returns>
+            <returns>True if the point is within the boundaries of the Console.</returns>
         </member>
         <member name="M:DromundKaas.Utils.PrintEntity(DromundKaas.Entity)">
             <summary>
@@ -264,7 +343,7 @@
             Select a friendly display color based on a number.
             </summary>
             <param name="Number">The number to switch.</param>
-            <returns></returns>
+            <returns>The resulting ConsoleColor.</returns>
         </member>
         <member name="M:DromundKaas.Utils.MoveEntity(DromundKaas.Entity,System.Char)">
             <summary>
@@ -272,6 +351,45 @@
             </summary>
             <param name="ToMove"> Entity to move.</param>
             <param name="Direction">Direction in which to move the entity. Accepted directions: 'u' (up), 'd' (down), 'l' (left), 'r' (right).</param>
+        </member>
+        <member name="T:DromundKaas.Level">
+            <summary>
+            Level class containing everything a Level object needs.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Level.Name">
+            <summary>
+            The verbose name of the level.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Level.SpawnCount">
+            <summary>
+            The number of enemies to be spawned.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Level.Pattern">
+            <summary>
+            The spawn pattern of the level. See Levels.dk for examples.
+            </summary>
+        </member>
+        <member name="F:DromundKaas.Level.EnemyKeyring">
+            <summary>
+            Keyring of Entities for the level to pick from. Either Enemies or Bosses, set by the Main function.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.Level.#ctor(System.String,System.Int32,System.String[])">
+            <summary>
+            Default Level constructor. Warning! Does not include EnemyKeyring initialization.
+            </summary>
+            <param name="Name">The name of the level.</param>
+            <param name="SpawnCount">The number of Spawns in the level.</param>
+            <param name="Pattern">The spawn pattern of the level.</param>
+        </member>
+        <member name="M:DromundKaas.Level.GetNextWave">
+            <summary>
+            Get the next wave of Enemies in the Level, as a List.
+            </summary>
+            <returns>A List of Enemies representing the next wave.</returns>
         </member>
         <member name="M:DromundKaas.Level.ExtractLevels">
             <summary>

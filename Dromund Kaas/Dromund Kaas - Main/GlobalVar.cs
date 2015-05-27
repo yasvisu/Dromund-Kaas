@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace DromundKaas
 {
-    class GlobalVar
+    /// <summary>
+    /// Global Variables class.
+    /// </summary>
+    static class GlobalVar
     {
         //CONSOLE
         public const int CONSOLE_WIDTH = 80;
@@ -16,8 +18,6 @@ namespace DromundKaas
         //FILES
         public const string FILE_ENTITY_TYPES_DK = "../../EntityTypes.dk";
         public const string FILE_LEVELS_DK = "../../Levels.dk";
-
-
 
         //COUNTERS
         public static uint IDCounter;

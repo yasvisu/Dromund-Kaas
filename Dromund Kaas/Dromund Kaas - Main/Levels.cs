@@ -1,21 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System;
 using System.Text.RegularExpressions;
 
 namespace DromundKaas
 {
+    /// <summary>
+    /// Level class containing everything a Level object needs.
+    /// </summary>
     public class Level
     {
+        /// <summary>
+        /// The verbose name of the level.
+        /// </summary>
         public string Name;
+
+        /// <summary>
+        /// The number of enemies to be spawned.
+        /// </summary>
         public int SpawnCount;
+
+        /// <summary>
+        /// The spawn pattern of the level. See Levels.dk for examples.
+        /// </summary>
         public string[] Pattern;
+
+        /// <summary>
+        /// Keyring of Entities for the level to pick from. Either Enemies or Bosses, set by the Main function.
+        /// </summary>
+        public List<EntityType> EnemyKeyring;
+
         private int CurrentWave;
         private int EnemyCounter;
         private Dictionary<char, EntityType> TokenTypes;
-        public List<EntityType> EnemyKeyring;
 
+        /// <summary>
+        /// Default Level constructor. Warning! Does not include EnemyKeyring initialization.
+        /// </summary>
+        /// <param name="Name">The name of the level.</param>
+        /// <param name="SpawnCount">The number of Spawns in the level.</param>
+        /// <param name="Pattern">The spawn pattern of the level.</param>
         public Level(string Name, int SpawnCount, string[] Pattern)
         {
             this.SpawnCount = SpawnCount;
@@ -26,6 +50,10 @@ namespace DromundKaas
             this.TokenTypes = new Dictionary<char, EntityType>();
         }
 
+        /// <summary>
+        /// Get the next wave of Enemies in the Level, as a List.
+        /// </summary>
+        /// <returns>A List of Enemies representing the next wave.</returns>
         public List<Enemy> GetNextWave()
         {
             if (EnemyKeyring == null)
