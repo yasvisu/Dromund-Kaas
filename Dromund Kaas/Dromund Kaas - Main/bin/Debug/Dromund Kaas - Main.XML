@@ -163,9 +163,19 @@
             Async ConsoleKey keypress listener.
             </summary>
         </member>
+        <member name="M:DromundKaas.SpaceShips.CollideBullets">
+            <summary>
+            Iterate through all Bullets, colide them with enemies, and delete entities upon collision.
+            </summary>
+        </member>
         <member name="M:DromundKaas.SpaceShips.PrintGameState">
             <summary>
             Print the current game state.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.ProgressEntities">
+            <summary>
+            Progress entities according to their current step and movement pattern.
             </summary>
         </member>
         <member name="T:DromundKaas.Point">

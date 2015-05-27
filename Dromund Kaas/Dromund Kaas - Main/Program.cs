@@ -20,12 +20,18 @@ namespace DromundKaas
         private static Entity[,] EntityMap;
 
         //COUNTERS
-        private static int CycleCounter;
+        private static ulong CycleCounter;
         private static uint IDCounter;
+        private static long SCORE;
+        private static uint EnemySpawnCount;
+        private static uint EnemyKillCount;
 
         //ASYNC
         private static HashSet<Task> HandlerSet;
+
+        //GAME STATE
         private static bool END;
+        private static bool WINNER;
 
         //VOICEOVER
         private static VoiceOver R2DTA;
@@ -65,7 +71,7 @@ namespace DromundKaas
                 ));
         }
 
-        static void Main(string[] args) //True Main
+        static void Main() //True Main
         {
             //1. INTRO
             //IntroOutro.Intro();
@@ -80,10 +86,11 @@ namespace DromundKaas
             Enemies.Add(ENEMY);
             Enemies.Add(ENEMY2);
 
-            //2. MAIN LOOP
-            #region Main Loop
+            //ADD LEVEL FUNCTIONALITY
+            PLAYER.Life = PLAYER.Type.MaxLife;
+            END = false;
 
-
+            #region 2. MAIN LOOP
             while (!END)
             {
                 //1 - Increment CycleCounter
@@ -102,7 +109,18 @@ namespace DromundKaas
             }
             #endregion
 
-            //3. OUTRO
+            #region 3. GAME FINISH
+            if (WINNER)
+            {
+                GameWin();
+            }
+            else
+            {
+                GameOver();
+            }
+            #endregion
+
+            //4. OUTRO
             // IntroOutro.Outro();
 
             Finit();
@@ -116,32 +134,9 @@ namespace DromundKaas
         private static void Finit()
         {
             // do something
-            Console.WriteLine("Successful termination.");
-            Console.ReadKey(true);
-        }
-
-        private static void LayerEntity(Entity Current, Point Destination)
-        {
-            Point temp = Current.Location;
-            for (int i = temp.Y; i < temp.Y + Current.Type.Sprite.GetLength(0); i++)
-            {
-                for (int j = temp.X; j < temp.X + Current.Type.Sprite.GetLength(1); j++)
-                {
-                    if (Utils.IsValidPoint(new Point(i, j)))
-                        EntityMap[i, j] = null;
-                }
-            }
-            temp = Destination;
-
-            for (int i = temp.Y; i < temp.Y + Current.Type.Sprite.GetLength(0); i++)
-            {
-                for (int j = temp.X; j < temp.X + Current.Type.Sprite.GetLength(1); j++)
-                {
-                    if (Utils.IsValidPoint(new Point(i, j)))
-                        EntityMap[i, j] = Current;
-                }
-            }
-
+            Console.SetCursorPosition(0, GlobalVar.CONSOLE_HEIGHT - 1);
+            Console.Write("Press any key to quit...");
+            Console.ReadKey();
         }
 
         /// <summary>
@@ -184,16 +179,214 @@ namespace DromundKaas
             }
         }
 
+        #region 2. MAIN LOOP FUNC
+
+        /// <summary>
+        /// Iterate through all Bullets, colide them with enemies, and delete entities upon collision.
+        /// </summary>
+        private static void CollideBullets()
+        {
+            Stack<Bullet> BulletCollisionStack = new Stack<Bullet>();
+            Stack<Enemy> EnemyCorpseStack = new Stack<Enemy>();
+            lock (Bullets)
+            {
+
+                for (int i = 0; i < Bullets.Count; i++)
+                {
+                    var tempBullet = Bullets[i];
+                    if (Bullets[i].Friendly)
+                    {
+                        lock (Enemies)
+                        {
+                            for (int j = 0; j < Enemies.Count; j++)
+                            {
+                                var temp = Enemies[j];
+                                if (tempBullet.Location.IsWithin(temp.Location, temp.GetBottomRightCorner()) &&
+                                        temp.Type.Sprite[tempBullet.Location.Y - temp.Location.Y,
+                                                        tempBullet.Location.X - temp.Location.X] != ' ')
+                                {
+                                    temp.ModifyLife(-tempBullet.Life);
+                                    if (temp.Life <= 0)
+                                    {
+                                        EnemyKillCount++;
+                                        AwardScoreEnemyKill(temp);
+                                        EnemyCorpseStack.Push(temp);
+                                    }
+
+                                    BulletCollisionStack.Push(tempBullet);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (tempBullet.Location.IsWithin(PLAYER.Location, PLAYER.GetBottomRightCorner()) &&
+                                        PLAYER.Type.Sprite[tempBullet.Location.Y - PLAYER.Location.Y,
+                                                        tempBullet.Location.X - PLAYER.Location.X] != ' ')
+                        {
+                            PLAYER.ModifyLife(-tempBullet.Life);
+                            if (PLAYER.Life <= 0)
+                            {
+                                END = true;
+                                WINNER = false;
+                            }
+
+                            BulletCollisionStack.Push(tempBullet);
+                        }
+                    }
+                }
+                while (BulletCollisionStack.Count > 0)
+                {
+                    Bullet temp = BulletCollisionStack.Pop();
+                    Bullets.Remove(temp);
+                }
+                while (EnemyCorpseStack.Count > 0)
+                {
+                    Enemies.Remove(EnemyCorpseStack.Pop());
+                }
+
+            }
+        }
+
+        private static void AwardScoreEnemyKill(Enemy Killed)
+        {
+            SCORE += 2 * Killed.Type.MaxLife;
+        }
+
+        /// <summary>
+        /// Print the current game state.
+        /// </summary>
+        private static void PrintGameState()
+        {
+            Console.Clear();
+            Utils.PrintEntity(PLAYER);
+            foreach (var E in Enemies)
+            {
+                Utils.PrintEntity(E);
+            }
+            lock (Bullets)
+            {
+                foreach (var B in Bullets)
+                {
+                    Utils.PrintEntity(B);
+                }
+            }
+            DisplayHUD();
+        }
+
+        private static void DisplayHUD()
+        {
+            var tempF = Console.ForegroundColor;
+            var tempB = Console.BackgroundColor;
+
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(0, GlobalVar.CONSOLE_HEIGHT - 1);
+            Console.Write(" HULL INTEGRITY: ");
+            if (PLAYER.Life < PLAYER.Type.MaxLife / 2)
+            {
+                if (PLAYER.Life < PLAYER.Type.MaxLife / 4)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                else
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+            }
+            else
+                Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(new String('@', Math.Max(PLAYER.Life, 0)).PadLeft(PLAYER.Type.MaxLife, '.'));
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write("\tSCORE: {0} ", SCORE);
+            Console.ForegroundColor = tempF;
+            Console.BackgroundColor = tempB;
+        }
+
+        /// <summary>
+        /// Progress entities according to their current step and movement pattern.
+        /// </summary>
+        private static void ProgressEntities()
+        {
+            for (int i = 0; i < Enemies.Count; i++)
+            {
+                EnemyAction(Enemies[i]);
+            }
+            lock (Bullets)
+            {
+                for (int i = 0; i < Bullets.Count; i++)
+                {
+                    BulletAction(Bullets[i]);
+                }
+            }
+        }
+
+        #endregion
+
+        #region 3. GAME FINISH FUNC
+        private static void GameOver()
+        {
+            Console.Clear();
+            PrintCentered("GAME OVER! YOU TRIED!", GlobalVar.CONSOLE_HEIGHT / 2, ConsoleColor.Red);
+            R2DTA.Utter("All Systems Critical!");
+            PrintCentered("Your Score:", GlobalVar.CONSOLE_HEIGHT / 2 + 1, ConsoleColor.White);
+            PrintCentered(string.Format(" {0} ", SCORE.ToString()), GlobalVar.CONSOLE_HEIGHT / 2 + 3, ConsoleColor.Black, ConsoleColor.White);
+
+            PLAYER.Location = new Point((GlobalVar.CONSOLE_WIDTH - PLAYER.Type.Sprite.GetLength(1)) / 2, GlobalVar.CONSOLE_HEIGHT / 2 + 5);
+            Utils.PrintEntity(PLAYER);
+
+        }
+
+        private static void GameWin()
+        {
+            Console.Clear();
+            SCORE += PLAYER.Life * 2;
+            PrintCentered("YOU WIN!", GlobalVar.CONSOLE_HEIGHT / 2, ConsoleColor.Green);
+            R2DTA.Utter("You Saved the Galaxy!");
+            PrintCentered("Your Score:", GlobalVar.CONSOLE_HEIGHT / 2 + 1, ConsoleColor.White);
+            PrintCentered(string.Format(" {0} ", SCORE.ToString()), GlobalVar.CONSOLE_HEIGHT / 2 + 3, ConsoleColor.Black, ConsoleColor.White);
+
+            PLAYER.Location = new Point((GlobalVar.CONSOLE_WIDTH - PLAYER.Type.Sprite.GetLength(1)) / 2, GlobalVar.CONSOLE_HEIGHT / 2 + 5);
+            Utils.PrintEntity(PLAYER);
+        }
+
+        private static void PrintCentered(string Text, int Height, ConsoleColor ForegroundColor = ConsoleColor.Gray, ConsoleColor BackgroundColor = ConsoleColor.Black)
+        {
+            var previousF = Console.ForegroundColor;
+            var previousB = Console.BackgroundColor;
+
+            Console.ForegroundColor = ForegroundColor;
+            Console.BackgroundColor = BackgroundColor;
+            Console.SetCursorPosition((GlobalVar.CONSOLE_WIDTH - Text.Length) / 2, Height);
+            Console.WriteLine(Text);
+
+            Console.ForegroundColor = previousF;
+            Console.BackgroundColor = previousB;
+        }
+        #endregion
+
+
+        #region MISC
+
+        /// <summary>
+        /// Generate Player bullets and reduce SCORE.
+        /// </summary>
         public static void PlayerShoot()
         {
+            SCORE--;
             Shoot(PLAYER, true);
         }
 
+        /// <summary>
+        /// Generate Enemy bullets.
+        /// </summary>
+        /// <param name="Shooter">The enemy to generate bullets for.</param>
         public static void EnemyShoot(Enemy Shooter)
         {
             Shoot(Shooter, false);
         }
 
+        /// <summary>
+        /// Generate player or enemy bullets for given Entity.
+        /// </summary>
+        /// <param name="Shooter">The shooter to generate bullets for.</param>
+        /// <param name="Friendly">Whether the bullets are friendly to the player.</param>
         private static void Shoot(Entity Shooter, bool Friendly)
         {
             foreach (var P in Shooter.Type.Blasters)
@@ -212,6 +405,10 @@ namespace DromundKaas
             }
         }
 
+        /// <summary>
+        /// Progress Enemy according to its Movement and Step.
+        /// </summary>
+        /// <param name="Current">The current enemy to progress.</param>
         public static void EnemyAction(Enemy Current)
         {
             if (Current.Step >= Current.Type.Movement.Length)
@@ -238,6 +435,10 @@ namespace DromundKaas
             Current.Step++;
         }
 
+        /// <summary>
+        /// Progress Bullet according to its current Movement and Step.
+        /// </summary>
+        /// <param name="Current">The current bullet to be progressed.</param>
         public static void BulletAction(Bullet Current)
         {
             if (Current.Step >= Current.Type.Movement.Length)
@@ -268,6 +469,9 @@ namespace DromundKaas
             Current.Step++;
         }
 
+        /// <summary>
+        /// Draw option menu and let player pick ship.
+        /// </summary>
         private static void SelectCommanderShip()
         {
             int xaxis = 1, yaxis = 2;
@@ -296,92 +500,18 @@ namespace DromundKaas
                 }
                 var KeyInfo = Console.ReadKey(false);
                 int choice = int.Parse(KeyInfo.KeyChar.ToString());
-                PLAYER = new Player(IDCounter++, Entities[choice - 1].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH/2, GlobalVar.CONSOLE_HEIGHT-5), Entities[choice - 1], Utils.SwitchCommanderColor(choice));
+                PLAYER = new Player(IDCounter++, Entities[choice - 1].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH / 2, GlobalVar.CONSOLE_HEIGHT - 5), Entities[choice - 1], Utils.SwitchCommanderColor(choice));
             }
             catch (Exception e)
             {
-                PLAYER = new Player(IDCounter++, Entities[0].MaxLife, new Point(0, 0), Entities[0], Utils.SwitchCommanderColor(1));
-            }
-        }
-
-        /// <summary>
-        /// Print the current game state.
-        /// </summary>
-        private static void PrintGameState()
-        {
-            Console.Clear();
-            Utils.PrintEntity(PLAYER);
-            foreach (var E in Enemies)
-            {
-                Utils.PrintEntity(E);
-            }
-            lock (Bullets)
-            {
-                foreach (var B in Bullets)
-                {
-                    Utils.PrintEntity(B);
-                }
-            }
-        }
-
-        private static void ProgressEntities()
-        {
-            for (int i = 0; i < Enemies.Count; i++)
-            {
-                EnemyAction(Enemies[i]);
-            }
-            lock (Bullets)
-            {
-                for (int i = 0; i < Bullets.Count; i++)
-                {
-                    BulletAction(Bullets[i]);
-                }
-            }
-        }
-
-        private static void CollideBullets()
-        {
-            Stack<Bullet> BulletCollisionStack = new Stack<Bullet>();
-            Stack<Enemy> EnemyCorpseStack = new Stack<Enemy>();
-            lock (Bullets)
-            {
-                lock (Enemies)
-                {
-                    for (int i = 0; i < Bullets.Count; i++)
-                    {
-                        var tempBullet = Bullets[i];
-                        if (Bullets[i].Friendly)
-                        {
-                            for (int j = 0; j < Enemies.Count; j++)
-                            {
-                                var temp = Enemies[j];
-                                if (tempBullet.Location.IsWithin(temp.Location, temp.GetBottomRightCorner()) &&
-                                        temp.Type.Sprite[Bullets[i].Location.Y - temp.Location.Y, Bullets[i].Location.X - temp.Location.X] != ' ')
-                                {
-                                    temp.ModifyLife(-tempBullet.Life);
-                                    if (temp.Life <= 0)
-                                    {
-                                        EnemyCorpseStack.Push(Enemies[j]);
-                                    }
-
-                                    BulletCollisionStack.Push(Bullets[i]);
-                                }
-                            }
-                        }
-                    }
-                    while (BulletCollisionStack.Count > 0)
-                    {
-                        Bullet temp = BulletCollisionStack.Pop();
-                        Bullets.Remove(temp);
-                    }
-                    while (EnemyCorpseStack.Count > 0)
-                    {
-                        Enemies.Remove(EnemyCorpseStack.Pop());
-                    }
-                }
+                PLAYER = new Player(IDCounter++, Entities[0].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH / 2, GlobalVar.CONSOLE_HEIGHT - 5), Entities[0], Utils.SwitchCommanderColor(1));
             }
         }
 
         #endregion
+
+        #endregion
+
+
     }
 }
