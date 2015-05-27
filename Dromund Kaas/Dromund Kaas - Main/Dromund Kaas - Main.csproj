@@ -58,9 +58,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="EntityTypes.dk" />
+    <None Include="Levels.dk" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ToDo.txt" />
+    <Compile Include="Levels.cs" />
     <Content Include="WriteDromundKaas.txt" />
     <Content Include="WriteInAGalaxy.txt" />
     <Content Include="WritePresents.txt" />

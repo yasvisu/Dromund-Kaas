@@ -82,8 +82,12 @@ namespace DromundKaas
             Console.ForegroundColor = previous;
         }
 
-
-        public static ConsoleColor SwitchCommanderColor(int Number)
+        /// <summary>
+        /// Select a friendly display color based on a number.
+        /// </summary>
+        /// <param name="Number">The number to switch.</param>
+        /// <returns></returns>
+        public static ConsoleColor SwitchColor(int Number)
         {
             switch (Number % 9)
             {
@@ -107,7 +111,6 @@ namespace DromundKaas
                     return ConsoleColor.Cyan;
             }
         }
-
 
         /// <summary>
         /// Move given entity in given direction. Modifies the Entity Location parameter.

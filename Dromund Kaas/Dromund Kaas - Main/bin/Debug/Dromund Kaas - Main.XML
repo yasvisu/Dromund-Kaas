@@ -9,11 +9,6 @@
             Abstract Entity class to be extended by both Players and Enemies.
             </summary>
         </member>
-        <member name="F:DromundKaas.Entity.ID">
-            <summary>
-            Current Entity ID.
-            </summary>
-        </member>
         <member name="F:DromundKaas.Entity.Life">
             <summary>
             Remaining life to the entity.
@@ -34,7 +29,7 @@
             Type of Entity.
             </summary>
         </member>
-        <member name="M:DromundKaas.Entity.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
+        <member name="M:DromundKaas.Entity.#ctor(System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
             <summary>
             Default Entity builder for all in-class parameters.
             </summary>
@@ -54,7 +49,7 @@
             Current step in the Enemy's movement path.
             </summary>
         </member>
-        <member name="M:DromundKaas.Enemy.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
+        <member name="M:DromundKaas.Enemy.#ctor(System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
             <summary>
             Default Entity builder for all in-class parameters.
             </summary>
@@ -69,7 +64,7 @@
             Player class to extend Entity.
             </summary>
         </member>
-        <member name="M:DromundKaas.Player.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
+        <member name="M:DromundKaas.Player.#ctor(System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor)">
             <summary>
             Default Entity builder for all in-class parameters.
             </summary>
@@ -89,7 +84,7 @@
             True if it is a bullet friendly to the player. False if it is an enemy bullet.
             </summary>
         </member>
-        <member name="M:DromundKaas.Bullet.#ctor(System.UInt32,System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor,System.Boolean)">
+        <member name="M:DromundKaas.Bullet.#ctor(System.Int32,DromundKaas.Point,DromundKaas.EntityType,System.ConsoleColor,System.Boolean)">
             <summary>
             Default Entity builder for all in-class parameters.
             </summary>
@@ -168,14 +163,60 @@
             Iterate through all Bullets, colide them with enemies, and delete entities upon collision.
             </summary>
         </member>
+        <member name="M:DromundKaas.SpaceShips.AwardScoreEnemyKill(DromundKaas.Enemy)">
+            <summary>
+            Award Player SCORE based on the type of Enemy killed.
+            </summary>
+            <param name="Killed">The enemy killed.</param>
+        </member>
         <member name="M:DromundKaas.SpaceShips.PrintGameState">
             <summary>
             Print the current game state.
             </summary>
         </member>
+        <member name="M:DromundKaas.SpaceShips.DisplayHUD">
+            <summary>
+            Display the HUD, featuring the player Life and SCORE.
+            </summary>
+        </member>
         <member name="M:DromundKaas.SpaceShips.ProgressEntities">
             <summary>
             Progress entities according to their current step and movement pattern.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.PlayerShoot">
+            <summary>
+            Generate Player bullets and reduce SCORE.
+            </summary>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.EnemyShoot(DromundKaas.Enemy)">
+            <summary>
+            Generate Enemy bullets.
+            </summary>
+            <param name="Shooter">The enemy to generate bullets for.</param>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.Shoot(DromundKaas.Entity,System.Boolean)">
+            <summary>
+            Generate player or enemy bullets for given Entity.
+            </summary>
+            <param name="Shooter">The shooter to generate bullets for.</param>
+            <param name="Friendly">Whether the bullets are friendly to the player.</param>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.EnemyAction(DromundKaas.Enemy)">
+            <summary>
+            Progress Enemy according to its Movement and Step.
+            </summary>
+            <param name="Current">The current enemy to progress.</param>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.BulletAction(DromundKaas.Bullet)">
+            <summary>
+            Progress Bullet according to its current Movement and Step.
+            </summary>
+            <param name="Current">The current bullet to be progressed.</param>
+        </member>
+        <member name="M:DromundKaas.SpaceShips.SelectCommanderShip">
+            <summary>
+            Draw option menu and let player pick ship.
             </summary>
         </member>
         <member name="T:DromundKaas.Point">
@@ -218,12 +259,24 @@
             </summary>
             <param name="Current">The entity to be printed.</param>
         </member>
+        <member name="M:DromundKaas.Utils.SwitchColor(System.Int32)">
+            <summary>
+            Select a friendly display color based on a number.
+            </summary>
+            <param name="Number">The number to switch.</param>
+            <returns></returns>
+        </member>
         <member name="M:DromundKaas.Utils.MoveEntity(DromundKaas.Entity,System.Char)">
             <summary>
             Move given entity in given direction. Modifies the Entity Location parameter.
             </summary>
             <param name="ToMove"> Entity to move.</param>
             <param name="Direction">Direction in which to move the entity. Accepted directions: 'u' (up), 'd' (down), 'l' (left), 'r' (right).</param>
+        </member>
+        <member name="M:DromundKaas.Level.ExtractLevels">
+            <summary>
+            Extracts all data from the Levels.dk file into an Array of Levels.
+            </summary>
         </member>
     </members>
 </doc>

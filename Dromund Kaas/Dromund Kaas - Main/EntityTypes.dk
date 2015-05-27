@@ -1,10 +1,10 @@
 ﻿>>>>>
 name="bossVader";
-life="10";
-movement="dllrr";
+life="30";
+movement="ll@llllllrrrr@rrrrrrrrll@ll";
   ___  
  |@|@| 
-/__A__\
+/@_A_@\
 >>>>>
 name="playerLuke";
 life="15";

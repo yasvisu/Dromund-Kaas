@@ -12,11 +12,6 @@ namespace DromundKaas
     public abstract class Entity
     {
         /// <summary>
-        /// Current Entity ID.
-        /// </summary>
-        public uint ID;
-
-        /// <summary>
         /// Remaining life to the entity.
         /// </summary>
         public int Life;
@@ -44,9 +39,8 @@ namespace DromundKaas
         /// <param name="Location">Current location of the Entity.</param>
         /// <param name="Type">Type of the Entity.</param>
         /// <param name="Color">Console color of the Entity.</param>
-        public Entity(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color)
+        public Entity(int Life, Point Location, EntityType Type, ConsoleColor Color)
         {
-            this.ID = ID;
             this.Life = Life;
             this.Location = Location;
             this.Type = Type;
@@ -83,8 +77,8 @@ namespace DromundKaas
         /// <param name="Location">Current location of the Entity.</param>
         /// <param name="Type">Type of the Entity.</param>
         /// <param name="Color">Console color of the Entity.</param>
-        public Enemy(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color)
-            : base(ID, Life, Location, Type, Color)
+        public Enemy(int Life, Point Location, EntityType Type, ConsoleColor Color)
+            : base(Life, Location, Type, Color)
         {
 
         }
@@ -103,14 +97,13 @@ namespace DromundKaas
         /// <param name="Location">Current location of the Entity.</param>
         /// <param name="Type">Type of the Entity.</param>
         /// <param name="Color">Console color of the Entity.</param>
-        public Player(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color)
-            : base(ID, Life, Location, Type, Color)
+        public Player(int Life, Point Location, EntityType Type, ConsoleColor Color)
+            : base(Life, Location, Type, Color)
         {
 
         }
     }
 
-    #endregion
 
     /// <summary>
     /// Bullet class to hold Bullet entity instances. Has an additional field for Friendliness.
@@ -131,12 +124,14 @@ namespace DromundKaas
         /// <param name="Type">Type of the Entity.</param>
         /// <param name="Color">Console color of the Entity.</param>
         /// <param name="Friendly">Friendliness of the Bullet.</param>
-        public Bullet(uint ID, int Life, Point Location, EntityType Type, ConsoleColor Color, bool Friendly)
-            : base(ID, Life, Location, Type, Color)
+        public Bullet(int Life, Point Location, EntityType Type, ConsoleColor Color, bool Friendly)
+            : base(Life, Location, Type, Color)
         {
             this.Friendly = Friendly;
         }
     }
+
+    #endregion
 
     /// <summary>
     /// Type of Entity. To be stored as unique values in the Main module.

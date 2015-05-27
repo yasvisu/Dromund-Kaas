@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace DromundKaas
 {
@@ -11,6 +12,12 @@ namespace DromundKaas
         #region STATIC VARIABLES
         //COLLECTIONS
         private static Dictionary<string, EntityType> EntityTypes;
+        private static Level[] Levels;
+        private static List<EntityType> EnemyTypes;
+        private static List<EntityType> BossTypes;
+        private static List<EntityType> PlayerTypes;
+        private static List<EntityType> BulletTypes;
+
 
         //ENTITIES
         private static Player PLAYER;
@@ -21,7 +28,6 @@ namespace DromundKaas
 
         //COUNTERS
         private static ulong CycleCounter;
-        private static uint IDCounter;
         private static long SCORE;
         private static uint EnemySpawnCount;
         private static uint EnemyKillCount;
@@ -31,6 +37,7 @@ namespace DromundKaas
 
         //GAME STATE
         private static bool END;
+        private static bool LEVEL_END;
         private static bool WINNER;
 
         //VOICEOVER
@@ -39,14 +46,35 @@ namespace DromundKaas
 
         private static void Init()
         {
-            //CONSOLE
-            Console.CursorVisible = false;
-            Console.SetWindowSize(GlobalVar.CONSOLE_WIDTH, GlobalVar.CONSOLE_HEIGHT);
-            Console.SetBufferSize(GlobalVar.CONSOLE_WIDTH, GlobalVar.CONSOLE_HEIGHT);
-
             //COLLECTIONS
             EntityTypes = new Dictionary<string, EntityType>();
             EntityType.ExtractData(EntityTypes);
+            Levels = Level.ExtractLevels();
+
+            //KEYRINGS
+            EnemyTypes = new List<EntityType>();
+            BossTypes = new List<EntityType>();
+            PlayerTypes = new List<EntityType>();
+            BulletTypes = new List<EntityType>();
+            foreach (var KVP in EntityTypes)
+            {
+                if (KVP.Key.Contains("enemy"))
+                {
+                    EnemyTypes.Add(KVP.Value);
+                }
+                else if (KVP.Key.Contains("boss"))
+                {
+                    BossTypes.Add(KVP.Value);
+                }
+                else if (KVP.Key.Contains("player"))
+                {
+                    PlayerTypes.Add(KVP.Value);
+                }
+                else if (KVP.Key.Contains("bullet"))
+                {
+                    PlayerTypes.Add(KVP.Value);
+                }
+            }
 
             //ENTITIES
             SelectCommanderShip();
@@ -57,7 +85,7 @@ namespace DromundKaas
 
             //COUNTERS
             CycleCounter = 0;
-            IDCounter = 0;
+            GlobalVar.IDCounter = 0;
 
             //ASYNC
             HandlerSet = new HashSet<Task>();
@@ -71,45 +99,83 @@ namespace DromundKaas
                 ));
         }
 
+        private static void ConsoleInit()
+        {
+            Console.Clear();
+            Console.CursorVisible = false;
+            Console.SetWindowSize(GlobalVar.CONSOLE_WIDTH, GlobalVar.CONSOLE_HEIGHT);
+            Console.SetBufferSize(GlobalVar.CONSOLE_WIDTH, GlobalVar.CONSOLE_HEIGHT);
+        }
+
         static void Main() //True Main
         {
             //1. INTRO
+            Task Initask = Task.Run(() => Init());
             //IntroOutro.Intro();
+            ConsoleInit();
+            Console.SetCursorPosition(0, 0);
+            Console.Write("Loading assets...");
+            Initask.Wait();
             Console.Clear();
-
-            Init();
 
             R2DTA.UtterAsync(string.Format("Greetings, Commander. I am your adjutant. Welcome to the SS {0} {1}. Rescue the Galaxy!", PLAYER.Color.ToString(), PLAYER.Type.Name.Substring(6)));
 
-            var ENEMY = new Enemy(IDCounter++, 10, new Point(5, 0), EntityTypes["enemyJabba"], ConsoleColor.Yellow);
-            var ENEMY2 = new Enemy(IDCounter++, 10, new Point(50, 0), EntityTypes["enemySpaceship1"], ConsoleColor.Red);
-            Enemies.Add(ENEMY);
-            Enemies.Add(ENEMY2);
-
-            //ADD LEVEL FUNCTIONALITY
-            PLAYER.Life = PLAYER.Type.MaxLife;
-            END = false;
-
-            #region 2. MAIN LOOP
-            while (!END)
+            #region LEVEL LOOP
+            for (int l = 0; l < Levels.Length && !END; l++)
             {
-                //1 - Increment CycleCounter
-                CycleCounter++;
+                //RESET VARIABLES
+                PLAYER.Life = PLAYER.Type.MaxLife;
+                LEVEL_END = false;
+                if (Levels[l].Name.Contains("Boss"))
+                    Levels[l].EnemyKeyring = BossTypes;
+                else
+                    Levels[l].EnemyKeyring = EnemyTypes;
+                List<Enemy> temp = Levels[l].GetNextWave();
+                if (temp != null)
+                {
+                    int length = temp.Sum((x) => x.Type.Sprite.GetLength(1)) + temp.Count;
+                    int XCounter = (GlobalVar.CONSOLE_WIDTH - length) / 2;
+                    Console.WriteLine(Levels[l].Name + " " + Levels[l].SpawnCount);
+                    Console.ReadKey();
+                    foreach (var E in temp)
+                    {
+                        E.Location = new Point(XCounter, 2);
+                        XCounter += E.Type.Sprite.GetLength(1) + 1;
+                        Enemies.Add(E);
+                    }
+                }
+                while (temp != null)
+                {
+                    #region 2. MAIN LOOP
+                    while (!(END || LEVEL_END))
+                    {
+                        //1 - Increment CycleCounter
+                        CycleCounter++;
 
-                //2 - Collide Bullets
-                CollideBullets();
+                        //2 - Collide Bullets
+                        CollideBullets();
 
-                //3 - Progress Entities
-                ProgressEntities();
+                        //3 - Progress Entities
+                        ProgressEntities();
 
-                //4 - Print State on Console
-                PrintGameState();
+                        //4 - Print State on Console
+                        PrintGameState();
 
-                Thread.Sleep(100);
+                        Thread.Sleep(100);
+                        if (Enemies.Count == 0)
+                            break;
+                    }
+                    #endregion
+                    temp = Levels[l].GetNextWave();
+                }
+
+
             }
             #endregion
 
             #region 3. GAME FINISH
+            if (!END)
+                WINNER = true;
             if (WINNER)
             {
                 GameWin();
@@ -248,6 +314,10 @@ namespace DromundKaas
             }
         }
 
+        /// <summary>
+        /// Award Player SCORE based on the type of Enemy killed.
+        /// </summary>
+        /// <param name="Killed">The enemy killed.</param>
         private static void AwardScoreEnemyKill(Enemy Killed)
         {
             SCORE += 2 * Killed.Type.MaxLife;
@@ -274,6 +344,9 @@ namespace DromundKaas
             DisplayHUD();
         }
 
+        /// <summary>
+        /// Display the HUD, featuring the player Life and SCORE.
+        /// </summary>
         private static void DisplayHUD()
         {
             var tempF = Console.ForegroundColor;
@@ -319,6 +392,7 @@ namespace DromundKaas
 
         #endregion
 
+        // Functions called at the Game end.
         #region 3. GAME FINISH FUNC
         private static void GameOver()
         {
@@ -362,6 +436,7 @@ namespace DromundKaas
         #endregion
 
 
+        // Various functions called throughout the engine.
         #region MISC
 
         /// <summary>
@@ -395,7 +470,7 @@ namespace DromundKaas
                 if (temp.X > 0 && temp.X < GlobalVar.CONSOLE_WIDTH && temp.Y > 0 && temp.Y < GlobalVar.CONSOLE_HEIGHT)
                 {
                     EntityType bulletTemp = EntityTypes["bulletRegular"];
-                    Bullets.Add(new Bullet(IDCounter++,
+                    Bullets.Add(new Bullet(
                         bulletTemp.MaxLife,
                         temp,
                         bulletTemp,
@@ -492,7 +567,7 @@ namespace DromundKaas
                         }
                         Console.SetCursorPosition(xaxis, yaxis - 1);
                         Console.Write(ship);
-                        var temp = new Player(IDCounter++, 10, new Point(xaxis, yaxis), ET.Value, Utils.SwitchCommanderColor(ship));
+                        var temp = new Player(10, new Point(xaxis, yaxis), ET.Value, Utils.SwitchColor(ship));
                         ship++;
                         Utils.PrintEntity(temp);
                         xaxis += temp.Type.Sprite.GetLength(1) + 2;
@@ -500,18 +575,17 @@ namespace DromundKaas
                 }
                 var KeyInfo = Console.ReadKey(false);
                 int choice = int.Parse(KeyInfo.KeyChar.ToString());
-                PLAYER = new Player(IDCounter++, Entities[choice - 1].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH / 2, GlobalVar.CONSOLE_HEIGHT - 5), Entities[choice - 1], Utils.SwitchCommanderColor(choice));
+                PLAYER = new Player(Entities[choice - 1].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH / 2, GlobalVar.CONSOLE_HEIGHT - 5), Entities[choice - 1], Utils.SwitchColor(choice));
             }
             catch (Exception e)
             {
-                PLAYER = new Player(IDCounter++, Entities[0].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH / 2, GlobalVar.CONSOLE_HEIGHT - 5), Entities[0], Utils.SwitchCommanderColor(1));
+                PLAYER = new Player(Entities[0].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH / 2, GlobalVar.CONSOLE_HEIGHT - 5), Entities[0], Utils.SwitchColor(1));
             }
         }
 
         #endregion
 
         #endregion
-
 
     }
 }
