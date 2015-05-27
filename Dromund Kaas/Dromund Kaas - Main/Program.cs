@@ -77,6 +77,7 @@ namespace DromundKaas
             }
 
             //ENTITIES
+            Console.Clear();
             SelectCommanderShip();
             Enemies = new List<Enemy>();
             Bullets = new List<Bullet>();
@@ -113,16 +114,18 @@ namespace DromundKaas
             Task Initask = Task.Run(() => Init());
             //IntroOutro.Intro();
             ConsoleInit();
-            Console.SetCursorPosition(0, 0);
-            Console.Write("Loading assets...");
+            PrintSystemStatus("Loading assets...");
             Initask.Wait();
             Console.Clear();
+
 
             R2DTA.UtterAsync(string.Format("Greetings, Commander. I am your adjutant. Welcome to the SS {0} {1}. Rescue the Galaxy!", PLAYER.Color.ToString(), PLAYER.Type.Name.Substring(6)));
 
             #region LEVEL LOOP
             for (int l = 0; l < Levels.Length && !END; l++)
             {
+                PrintSystemStatus(Levels[l].Name);
+                R2DTA.Utter(Levels[l].Name);
                 //RESET VARIABLES
                 PLAYER.Life = PLAYER.Type.MaxLife;
                 LEVEL_END = false;
@@ -131,21 +134,19 @@ namespace DromundKaas
                 else
                     Levels[l].EnemyKeyring = EnemyTypes;
                 List<Enemy> temp = Levels[l].GetNextWave();
-                if (temp != null)
+
+                #region WAVE LOOP
+                while (temp != null)
                 {
                     int length = temp.Sum((x) => x.Type.Sprite.GetLength(1)) + temp.Count;
                     int XCounter = (GlobalVar.CONSOLE_WIDTH - length) / 2;
-                    Console.WriteLine(Levels[l].Name + " " + Levels[l].SpawnCount);
-                    Console.ReadKey();
+
                     foreach (var E in temp)
                     {
-                        E.Location = new Point(XCounter, 2);
+                        E.Location = new Point(XCounter, 1);
                         XCounter += E.Type.Sprite.GetLength(1) + 1;
                         Enemies.Add(E);
                     }
-                }
-                while (temp != null)
-                {
                     #region 2. MAIN LOOP
                     while (!(END || LEVEL_END))
                     {
@@ -168,6 +169,7 @@ namespace DromundKaas
                     #endregion
                     temp = Levels[l].GetNextWave();
                 }
+                #endregion
 
 
             }
@@ -581,6 +583,12 @@ namespace DromundKaas
             {
                 PLAYER = new Player(Entities[0].MaxLife, new Point(GlobalVar.CONSOLE_WIDTH / 2, GlobalVar.CONSOLE_HEIGHT - 5), Entities[0], Utils.SwitchColor(1));
             }
+        }
+
+        private static void PrintSystemStatus(string Status)
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.Write(Status);
         }
 
         #endregion
