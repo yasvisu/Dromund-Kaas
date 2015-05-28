@@ -1,7 +1,32 @@
 # Dromund-Kaas
 Dromund Kaas team - C# game for the Advanced C# course
 
-Как се наглася Git (cmd версия):
+# Star Wars: The Sith Invader Game.
+
+### The Game:
+
+* You are the Space Commander!
+  * Choose your ship.
+  * Rescue the Galaxy!
+
+Included:
+* TWO WHOLE LEVELS!
+* More than 5 Commander ship styles.
+* Various Enemy Ship styles.
+* A charming adjutant to speak out when it matters the most.
+
+### Technical Features:
+
+* Easily extendable code:
+  * Fully documented
+  * Neatly formatted.
+* The capability to add / remove levels, enemies, bosses, and modify their sprites without touching the source code.
+* Reusable and extendable classes.
+* Great to tinker and polish.
+
+---
+
+#### Как се наглася Git (cmd версия):
 
 * Инсталирате Гит - http://git-scm.com/ - тази стъпка е нужна независимо дали ще използвате CMD или TortoiseGit
 
