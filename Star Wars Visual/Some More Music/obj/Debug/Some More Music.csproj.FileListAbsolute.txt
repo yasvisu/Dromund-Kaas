@@ -1,0 +1,6 @@
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\Some More Music\bin\Debug\Some More Music.exe.config
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\Some More Music\bin\Debug\Some More Music.exe
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\Some More Music\bin\Debug\Some More Music.pdb
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\Some More Music\obj\Debug\Some More Music.csprojResolveAssemblyReference.cache
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\Some More Music\obj\Debug\Some More Music.exe
+C:\Users\Nicks\Google Диск\Study\Advanced C#\Dromund-Kaas\Star Wars Visual\Some More Music\obj\Debug\Some More Music.pdb
