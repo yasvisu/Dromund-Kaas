@@ -116,7 +116,7 @@ namespace DromundKaas
         static void Main() //True Main
         {
             //1. INTRO
-            IntroOutro.Intro();
+            //IntroOutro.Intro();
             Task Initask = Task.Run(() => Init());
 
             PrintSystemStatus("Loading assets...");
